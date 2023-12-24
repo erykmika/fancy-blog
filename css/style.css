@@ -1,0 +1,26 @@
+body{
+    margin: 0;
+    width: 100%;
+    height: auto;
+    text-align: center;
+    color: white;
+    background-color: #4f4f55;
+}
+
+.header
+{
+    margin: auto;
+    margin-bottom: 30px;
+    height: 50px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.article{
+    margin: auto;
+    margin-bottom: 20px;
+    background-color: rgb(255, 255, 255);
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: black;
+    width: 40%;
+}
+

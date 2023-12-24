@@ -14,6 +14,9 @@ class Article
     /** @var string $content stores content of the article */
     private $content;
 
+    /** @var string $date stores publication date of the article */
+    private $date;
+
     /**
      * Set the id of the article
      * 
@@ -78,5 +81,27 @@ class Article
     public function getContent()
     {
         return $this->content;
+    }
+
+    /**
+     * Set the publication date of the article
+     * 
+     * @param string $date Date to be set
+     * 
+     * @return void
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+    }
+
+    /**
+     * Get the publication date of the article
+     * 
+     * @return string Publication date of the article
+     */
+    public function getDate()
+    {
+        return $this->date;
     }
 }
