@@ -9,17 +9,36 @@ class ArticleModel extends Model
     protected $table = "Article";
 
     /**
-     * Get articles from a database
+     * Get paginated articles from a database
+     * Implement own pagination
      * 
-     * @param $id Id of the article to be retrieved. If it is 0, all articles are returned;
+     * @param $page Number of page to return articles from
+     * @param $limit Number of articles per page
      * @return mixed
      */
-    public function getArticles($id = 0)
+    public function getArticlesPaginated($page = 1, $page_size = 10)
     {
-        if ($id == 0) {
-            return $this->findAll();
+        $page = intval($page);
+        $page_size = intval($page_size);
+        if($page < 1 || $page_size < 1) {
+            throw new \InvalidArgumentException("Invalid pagination parameters");
         }
+        return $this->orderBy("date")->findAll($page_size, ($page - 1) * $page_size);
+    }
 
-        return $this->where(["id"=> $id])->first();
+    /**
+     * Get specific article from a database
+     * 
+     * @param $id Id of the article to retrieve
+     * @return mixed
+     */
+    public function getArticle($id)
+    {
+        $id = intval($id);
+
+        if ($id < 1) {
+            throw new \InvalidArgumentException("Invalid id");
+        }
+        return $this->where("id", $id)->first();
     }
 }
