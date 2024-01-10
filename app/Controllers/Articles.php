@@ -26,8 +26,12 @@ class Articles extends BaseController
         try {
             $data['articles'] = $model->getArticlesPaginated(page: $pageNum, page_size: Articles::page_size);
         } catch (\InvalidArgumentException $e) {
-            $data = [];
+            throw new PageNotFoundException();
         }
+
+        $data['curPageNum'] = $pageNum;
+        $data['numOfPages'] = (int)ceil($model->getNumOfRows() / Articles::page_size);
+
         return view('templates/header')
             . view('articles/index', $data)
             . view('templates/footer');
@@ -46,7 +50,7 @@ class Articles extends BaseController
         try {
             $data['article'] = $model->getArticle($articleId);
         } catch (\InvalidArgumentException $e) {
-            $data = [];
+            throw new PageNotFoundException();
         }
         return view('templates/header')
             . view('articles/single', $data)

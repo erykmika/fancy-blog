@@ -20,7 +20,7 @@ class ArticleModel extends Model
     {
         $page = intval($page);
         $page_size = intval($page_size);
-        if($page < 1 || $page_size < 1) {
+        if ($page < 1 || $page_size < 1) {
             throw new \InvalidArgumentException("Invalid pagination parameters");
         }
         return $this->orderBy("date")->findAll($page_size, ($page - 1) * $page_size);
@@ -39,6 +39,24 @@ class ArticleModel extends Model
         if ($id < 1) {
             throw new \InvalidArgumentException("Invalid id");
         }
-        return $this->where("id", $id)->first();
+
+        $article = $this->where("id", $id)->first();
+
+        if ($article === null) {
+            throw new \InvalidArgumentException("Invalid id");
+        }
+
+        return $article;
+    }
+
+    /**
+     * Get number of rows in the table
+     * 
+     * @return int
+     */
+    public function getNumOfRows()
+    {
+        $query = $this->db->query("SELECT count(id) FROM Article;");
+        return (int)$query->getRowArray()['count(id)'];
     }
 }
