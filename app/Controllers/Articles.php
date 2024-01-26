@@ -9,9 +9,9 @@ use App\Models\ArticleModel;
 class Articles extends BaseController
 {
     /**
-     * @var int page_size Number of articles per page in case of pagination
+     * @var int PAGE_SIZE Number of articles per page in case of pagination
      */
-    private const page_size = 5;
+    private const PAGE_SIZE = 5;
 
     /**
      * Return the view of a page of articles
@@ -24,13 +24,13 @@ class Articles extends BaseController
     {
         $model = model(ArticleModel::class);
         try {
-            $data['articles'] = $model->getArticlesPaginated(page: $pageNum, page_size: Articles::page_size);
+            $data['articles'] = $model->getArticlesPaginated(page: $pageNum, page_size: Articles::PAGE_SIZE);
         } catch (\InvalidArgumentException $e) {
             throw new PageNotFoundException();
         }
 
         $data['curPageNum'] = $pageNum;
-        $data['numOfPages'] = (int)ceil($model->getNumOfRows() / Articles::page_size);
+        $data['numOfPages'] = (int)ceil($model->getNumOfRows() / Articles::PAGE_SIZE);
 
         return view('templates/header')
             . view('articles/index', $data)
