@@ -9,7 +9,7 @@ body {
 
 .header {
     margin: auto;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     height: 50px;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
@@ -48,4 +48,26 @@ ul.navbar {
   
   li a:hover {
     background-color: #111;
+  }
+
+  .logout, .add {
+    margin-bottom: 10px;
+  }
+
+  .logout a, .add a {
+    width: 30%;
+    height: 20px;
+    color: white;
+    font-weight: bolder;
+    margin: auto;
+    text-decoration: underline;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  }
+
+  .delete {
+    padding-top: 0px;
+    color: red;
+    width: 30%;
+    margin: auto;
+    text-decoration: underline;
   }

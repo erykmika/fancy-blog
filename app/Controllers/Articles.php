@@ -30,7 +30,7 @@ class Articles extends BaseController
         }
 
         $data['curPageNum'] = $pageNum;
-        $data['numOfPages'] = (int)ceil($model->getNumOfRows() / Articles::PAGE_SIZE);
+        $data['numOfPages'] = $model->getNumOfPages(self::PAGE_SIZE);
 
         return view('templates/header')
             . view('articles/index', $data)
