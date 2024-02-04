@@ -10,7 +10,7 @@
     <?php foreach ($articles as $article): ?>
         <div class="article">
             <div>
-                <a href="/admin/<?= esc($article["id"]) ?>"><?= esc($article["title"]) ?></a>
+                <a href="/admin/articles/<?= esc($article["id"]) ?>"><?= esc($article["title"]) ?></a>
             </div>
             <div>
                 <?= esc($article["content"]) ?>

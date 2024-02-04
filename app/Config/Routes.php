@@ -23,6 +23,7 @@ $routes->post('/admin/add', [Admin::class,'handleCreate']);
 $routes->post('/admin/delete/(:segment)', [Admin::class,'handleDelete']);
 
 $routes->get('/admin', [Admin::class, 'displayDashboardPage']);
+$routes->get('/admin/articles/(:segment)', [Admin::class, 'displayArticlePage']);
 $routes->get('/admin/(:segment)', [Admin::class, 'displayDashboardPage']);
 
 /** 

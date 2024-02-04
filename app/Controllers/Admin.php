@@ -60,7 +60,7 @@ class Admin extends BaseController
     public function handleLogin()
     {
         if (!$this->request->is('post')) {
-            throw new PageNotFoundException('');
+            throw new PageNotFoundException();
         }
 
         if ($this->request->getGetPost('pswd') === self::ADMIN_PASS) {
@@ -95,7 +95,7 @@ class Admin extends BaseController
     public function displayDashboardPage($pageNum = 1)
     {
         if (!$this->authorize()) {
-            throw new PageNotFoundException('');
+            throw new PageNotFoundException();
         }
 
         $model = model(ArticleModel::class);
@@ -111,6 +111,31 @@ class Admin extends BaseController
 
         return view('templates/header') .
             view('admin/dashboard', $data) .
+            view('templates/footer');
+    }
+
+    /**
+     * Display specific article page to admin
+     * 
+     * @param int $articleId Id of the article
+     * 
+     * @return mixed
+     */
+    public function displayArticlePage($articleId)
+    {
+        if(!$this->authorize()) {
+            throw new PageNotFoundException();
+        }
+
+        $model = model(ArticleModel::class);
+        try {
+            $data['article'] = $model->getArticle($articleId);
+        } catch (InvalidArgumentException $e) {
+            throw new PageNotFoundException();
+        }
+
+        return view('templates/header') .
+            view('articles/single', $data) .
             view('templates/footer');
     }
 
@@ -132,7 +157,7 @@ class Admin extends BaseController
     public function displayCreatePage()
     {
         if (!$this->authorize()) {
-            throw new PageNotFoundException('');
+            throw new PageNotFoundException();
         }
 
         return view('templates/header')
@@ -148,15 +173,15 @@ class Admin extends BaseController
     public function handleCreate()
     {
         if (!$this->authorize() || !$this->request->is('post')) {
-            throw new PageNotFoundException('');
+            throw new PageNotFoundException();
         }
 
         try {
             // Retrieve data from the POST request
-            $title = $this->request->getPost('title');
-            $content = $this->request->getPost('content');
+            $title = $this->request->getPost('title', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $content = $this->request->getPost('content', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-            // Sanitize data inserted into the database
+            // Sanitize data provided within the POST request
             $title = trim($title);
             $content = trim($content);
 
@@ -177,7 +202,7 @@ class Admin extends BaseController
     public function handleDelete($articleId)
     {
         if (!$this->authorize() || !$this->request->is('post')) {
-            throw new PageNotFoundException('');
+            throw new PageNotFoundException();
         }
 
         $model = model(ArticleModel::class);
