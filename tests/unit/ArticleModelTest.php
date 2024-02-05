@@ -10,11 +10,18 @@ class ArticleModelTest extends CIUnitTestCase
     // Use the database trait. A SQLite database is used for testing.
     use DatabaseTestTrait;
 
-    // Seeding the database
+    /**
+     * Database seed
+     */
     protected $seed = 'ArticleSeeder';
+    /**
+     * Seed once
+     */
     protected $seedOnce = false;
 
-    // Tested article model
+    /**
+     * Article model tested
+     */
     protected $model;
 
 
@@ -58,6 +65,18 @@ class ArticleModelTest extends CIUnitTestCase
             'content' => $content
         ];
         $this->seeInDatabase('Article', $criteria);
+    }
+
+    public function testArticleCanBeUpdated()
+    {
+        $newTitle = 'NewTitle';
+        $newContent = 'NewContent';
+        $this->model->updateArticle(1, $newTitle, $newContent);
+        $this->seeInDatabase('Article', [
+            'id' => 1,
+            'title' => $newTitle,
+            'content' => $newContent
+        ]);
     }
 
     public function testArticleCanBeDeleted()
