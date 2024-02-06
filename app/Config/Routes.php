@@ -20,6 +20,9 @@ $routes->get('/admin/logout', [Admin::class, 'logout']);
 $routes->get('/admin/add', [Admin::class,'displayCreatePage']);
 $routes->post('/admin/add', [Admin::class,'handleCreate']);
 
+$routes->get('/admin/edit/(:segment)', [Admin::class, 'displayEditPage']);
+$routes->post('/admin/edit/(:segment)', [Admin::class, 'handleEdit']);
+
 $routes->post('/admin/delete/(:segment)', [Admin::class,'handleDelete']);
 
 $routes->get('/admin', [Admin::class, 'displayDashboardPage']);

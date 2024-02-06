@@ -22,6 +22,7 @@
                 <form method="post" action="/admin/delete/<?= esc($article["id"]) ?>"
                 onsubmit="return confirm('Are you sure?');">
                 <input type="submit" value="Delete">
+                <a href="/admin/edit/<?= esc($article['id']) ?>">Edit</a>
                 </form>
             </div>
         </div>

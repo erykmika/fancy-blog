@@ -7,6 +7,7 @@ use Config\Services;
 use CodeIgniter\HTTP\RedirectResponse;
 
 use App\Models\ArticleModel;
+
 use InvalidArgumentException;
 use Exception;
 
@@ -123,7 +124,7 @@ class Admin extends BaseController
      */
     public function displayArticlePage($articleId)
     {
-        if(!$this->authorize()) {
+        if (!$this->authorize()) {
             throw new PageNotFoundException();
         }
 
@@ -137,6 +138,67 @@ class Admin extends BaseController
         return view('templates/header') .
             view('articles/single', $data) .
             view('templates/footer');
+    }
+
+    /**
+     * Display article edit page to admin
+     * 
+     * @param int $articleId Id of the article to be edited
+     * 
+     * @return mixed
+     */
+    public function displayEditPage($articleId)
+    {
+        if (!$this->authorize()) {
+            throw new PageNotFoundException();
+        }
+
+        $model = model(ArticleModel::class);
+        try {
+            $data['article'] = $model->getArticle($articleId);
+        } catch (InvalidArgumentException $e) {
+            throw new PageNotFoundException();
+        }
+
+        return view('templates/header') .
+            view('admin/edit', $data) .
+            view('templates/footer');
+    }
+
+    /**
+     * Process article edit request
+     * 
+     * @param int $articleId Id of the article that is edited
+     * 
+     * @return RedirectResponse
+     */
+    public function handleEdit($articleId)
+    {
+        if (!$this->authorize() || !$this->request->is('post')) {
+            throw new PageNotFoundException();
+        }
+
+        // Retrieve data from the POST request, perform validation
+        $newTitle = $this->request->getPost('new_title', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $newContent = $this->request->getPost('new_content', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+        $newTitle = trim($newTitle);
+        $newContent = trim($newContent);
+
+        // If either field is empty (""), redirect back to edit page
+        if (empty($newTitle) || empty($newContent)) {
+            return redirect()->to(site_url('/admin/edit/' . $articleId));
+        }
+
+        $model = model(ArticleModel::class);
+
+        try {
+            $model->updateArticle($articleId, $newTitle, $newContent);
+        } catch (Exception $e) {
+            throw new PageNotFoundException();
+        }
+
+        return redirect()->route('Admin::displayDashboardPage');
     }
 
     /**
@@ -177,11 +239,10 @@ class Admin extends BaseController
         }
 
         try {
-            // Retrieve data from the POST request
+            // Retrieve data from the POST request, validate it
             $title = $this->request->getPost('title', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $content = $this->request->getPost('content', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-            // Sanitize data provided within the POST request
             $title = trim($title);
             $content = trim($content);
 
