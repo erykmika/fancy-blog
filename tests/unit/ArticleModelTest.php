@@ -1,9 +1,9 @@
 <?php
 
-use App\Models\ArticleModel;
-use Codeigniter\Test\CIUnitTestCase;
-use Codeigniter\Test\DatabaseTestTrait;
+use CodeIgniter\Test\CIUnitTestCase;
+use CodeIgniter\Test\DatabaseTestTrait;
 
+use App\Models\ArticleModel;
 
 class ArticleModelTest extends CIUnitTestCase
 {
@@ -14,6 +14,7 @@ class ArticleModelTest extends CIUnitTestCase
      * Database seed
      */
     protected $seed = 'ArticleSeeder';
+
     /**
      * Seed once
      */

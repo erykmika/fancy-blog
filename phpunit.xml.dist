@@ -9,7 +9,7 @@
     </report>
   </coverage>
   <testsuites>
-    <testsuite name="Model">
+    <testsuite name="Unit">
       <directory>./tests</directory>
     </testsuite>
   </testsuites>
