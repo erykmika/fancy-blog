@@ -216,7 +216,7 @@ class Admin extends BaseController
      * 
      * @return mixed
      */
-    public function displayCreatePage()
+    public function displayAddPage()
     {
         if (!$this->authorize()) {
             throw new PageNotFoundException();
@@ -232,7 +232,7 @@ class Admin extends BaseController
      * 
      * @return RedirectResponse
      */
-    public function handleCreate()
+    public function handleAdd()
     {
         if (!$this->authorize() || !$this->request->is('post')) {
             throw new PageNotFoundException();
@@ -246,8 +246,14 @@ class Admin extends BaseController
             $title = trim($title);
             $content = trim($content);
 
+            // If either field is empty (""), navigate back to add page
+            if (empty($title) || empty($content)) {
+                return redirect()->to(site_url('/admin/add'));
+            }
+
             $model = model(ArticleModel::class);
             $model->createArticle($title, $content);
+
         } catch (Exception $e) {
             throw new PageNotFoundException("An error occurred");
         }

@@ -17,8 +17,8 @@ $routes->post('/admin/login', [Admin::class, 'handleLogin']);
 
 $routes->get('/admin/logout', [Admin::class, 'logout']);
 
-$routes->get('/admin/add', [Admin::class,'displayCreatePage']);
-$routes->post('/admin/add', [Admin::class,'handleCreate']);
+$routes->get('/admin/add', [Admin::class,'displayAddPage']);
+$routes->post('/admin/add', [Admin::class,'handleAdd']);
 
 $routes->get('/admin/edit/(:segment)', [Admin::class, 'displayEditPage']);
 $routes->post('/admin/edit/(:segment)', [Admin::class, 'handleEdit']);
