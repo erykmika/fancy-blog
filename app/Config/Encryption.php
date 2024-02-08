@@ -8,7 +8,7 @@ use CodeIgniter\Config\BaseConfig;
  * Encryption configuration.
  *
  * These are the settings used for encryption, if you don't pass a parameter
- * array to the encrypter for creation/initialization.
+ * array to the encrypter for Create/initialization.
  */
 class Encryption extends BaseConfig
 {

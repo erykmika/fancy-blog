@@ -1,14 +1,29 @@
+<div class="logout">
+    <a href="/admin/logout">Logout</a>
+</div>
+
+<div class="add">
+    <a href="/admin/add">Add an article</a>
+</div>
+
 <?php if (!empty($articles) && is_array($articles)): ?>
     <?php foreach ($articles as $article): ?>
         <div class="article">
             <div>
-                <a href="/articles/<?= esc($article["id"]) ?>"><?= esc($article["title"]) ?></a>
+                <a href="/admin/articles/<?= esc($article["id"]) ?>"><?= esc($article["title"]) ?></a>
             </div>
             <div>
                 <?= esc($article["content"]) ?>
             </div>
             <div>
                 <?= esc($article["date"]) ?>
+            </div>
+            <div class="delete">
+                <form method="post" action="/admin/delete/<?= esc($article["id"]) ?>"
+                onsubmit="return confirm('Are you sure?');">
+                <input type="submit" value="Delete">
+                <a href="/admin/edit/<?= esc($article['id']) ?>">Edit</a>
+                </form>
             </div>
         </div>
     <?php endforeach; ?>
@@ -19,13 +34,13 @@
             <?php for ($i = 0; $i < $numOfPages; $i++): ?>
                 <?php if ($i + 1 != $curPageNum): ?>
                     <li>
-                        <a href="/<?= $i + 1 ?>" class="not-current">
+                        <a href="/admin/<?= $i + 1 ?>" class="not-current">
                             <?= esc($i + 1) ?>
                         </a>
                     </li>
                 <?php else: ?>
                     <li>
-                        <a href="/<?= $i + 1 ?>">
+                        <a href="/admin/<?= $i + 1 ?>">
                             <?= esc($i + 1) ?>
                         </a>
                     </li>
