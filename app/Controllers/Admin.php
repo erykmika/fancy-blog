@@ -47,9 +47,7 @@ class Admin extends BaseController
             return redirect()->route('Admin::displayDashboardPage');
         }
 
-        return view('templates/header')
-            . view('admin/login')
-            . view('templates/footer');
+        return view('admin/login');
     }
 
     /**
@@ -110,9 +108,7 @@ class Admin extends BaseController
         $data['curPageNum'] = $pageNum;
         $data['numOfPages'] = $model->getNumOfPages(self::PAGE_SIZE);
 
-        return view('templates/header') .
-            view('admin/dashboard', $data) .
-            view('templates/footer');
+        return view('admin/dashboard', $data);
     }
 
     /**
@@ -135,9 +131,7 @@ class Admin extends BaseController
             throw new PageNotFoundException();
         }
 
-        return view('templates/header') .
-            view('articles/single', $data) .
-            view('templates/footer');
+        return view('articles/single', $data);
     }
 
     /**
@@ -160,9 +154,7 @@ class Admin extends BaseController
             throw new PageNotFoundException();
         }
 
-        return view('templates/header') .
-            view('admin/edit', $data) .
-            view('templates/footer');
+        return view('admin/edit', $data);
     }
 
     /**
@@ -222,9 +214,7 @@ class Admin extends BaseController
             throw new PageNotFoundException();
         }
 
-        return view('templates/header')
-            . view('admin/add')
-            . view('templates/footer');
+        return view('admin/add');
     }
 
     /**

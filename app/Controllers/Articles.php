@@ -32,9 +32,7 @@ class Articles extends BaseController
         $data['curPageNum'] = $pageNum;
         $data['numOfPages'] = $model->getNumOfPages(self::PAGE_SIZE);
 
-        return view('templates/header')
-            . view('articles/index', $data)
-            . view('templates/footer');
+        return view('articles/page', $data);
     }
 
     /**
@@ -52,8 +50,6 @@ class Articles extends BaseController
         } catch (\InvalidArgumentException $e) {
             throw new PageNotFoundException();
         }
-        return view('templates/header')
-            . view('articles/single', $data)
-            . view('templates/footer');
+        return view('articles/single', $data);
     }
 }

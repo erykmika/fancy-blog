@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html>
 
 <head>
@@ -11,21 +12,16 @@
 </head>
 
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="/admin">Fancy blog</a>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <header>
+            <div class="container">
+                <a class="navbar-brand" href="/">Fancy blog</a>
             </div>
-        </nav>
-    </header>
-
-    <div class="container">
-        <form method="post" action="/admin/login">
-            <label for="pswd">Password:</label>
-            <input type="password" name="pswd" required />
-            <input type="submit" value="Login">
-        </form>
-    </div>
+        </header>
+    </nav>
+    <main>
+        <?= $this->renderSection('content') ?>
+    </main>
 </body>
 
 </html>

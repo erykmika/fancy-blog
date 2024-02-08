@@ -7,7 +7,7 @@ use App\Models\ArticleModel;
 
 class ArticleModelTest extends CIUnitTestCase
 {
-    // Use the database trait. A SQLite database is used for testing.
+    // Use the database trait. An SQLite database is used for testing.
     use DatabaseTestTrait;
 
     /**
