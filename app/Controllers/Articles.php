@@ -17,7 +17,6 @@ class Articles extends BaseController
      * Return the view of a page of articles
      * 
      * @param int $pageNum Number of the page to be returned, 1 by default
-
      * @return mixed
      */
     public function viewPage($pageNum = 1)
@@ -39,7 +38,6 @@ class Articles extends BaseController
      * Return the view of a single article
      * 
      * @param int $articleId Id of the article
-     * 
      * @return mixed
      */
     public function viewArticle($articleId)

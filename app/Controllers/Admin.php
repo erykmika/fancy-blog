@@ -38,7 +38,6 @@ class Admin extends BaseController
 
     /**
      * Return the admin login panel view
-     * 
      * @return mixed
      */
     public function viewLogin()
@@ -88,7 +87,6 @@ class Admin extends BaseController
      * Display given page of articles
      * 
      * @param int $pageNum Number of page to be contained in the dashboard 
-     * 
      * @return mixed
      */
     public function displayDashboardPage($pageNum = 1)
@@ -115,7 +113,6 @@ class Admin extends BaseController
      * Display specific article page to admin
      * 
      * @param int $articleId Id of the article
-     * 
      * @return mixed
      */
     public function displayArticlePage($articleId)
@@ -138,7 +135,6 @@ class Admin extends BaseController
      * Display article edit page to admin
      * 
      * @param int $articleId Id of the article to be edited
-     * 
      * @return mixed
      */
     public function displayEditPage($articleId)
@@ -161,7 +157,6 @@ class Admin extends BaseController
      * Process article edit request
      * 
      * @param int $articleId Id of the article that is edited
-     * 
      * @return RedirectResponse
      */
     public function handleEdit($articleId)
