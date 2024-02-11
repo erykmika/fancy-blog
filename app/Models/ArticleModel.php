@@ -65,7 +65,6 @@ class ArticleModel extends Model
      * Get total number of pages in case of pagination
      * 
      * @param int $page_size Number of articles per page
-     * 
      * @return int
      */
     public function getNumOfPages($page_size)
@@ -83,7 +82,6 @@ class ArticleModel extends Model
      * 
      * @param string $title Title of the created article
      * @param string $content Content of the created article
-     * 
      * @return void
      */
     public function createArticle($title, $content)
@@ -102,7 +100,6 @@ class ArticleModel extends Model
      * @param int $id Id of the article to be updated
      * @param string $newTitle New title
      * @param string $newContent New content
-     * 
      * @return void
      */
     public function updateArticle($id, $newTitle, $newContent)
@@ -117,7 +114,6 @@ class ArticleModel extends Model
      * Delete the article with the specified id
      * 
      * @param int $id Id of the article to be deleted
-     * 
      * @return void
      */
     public function deleteArticle($id)

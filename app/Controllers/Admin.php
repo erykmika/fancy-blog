@@ -38,7 +38,6 @@ class Admin extends BaseController
 
     /**
      * Return the admin login panel view
-     * 
      * @return mixed
      */
     public function viewLogin()
@@ -47,9 +46,7 @@ class Admin extends BaseController
             return redirect()->route('Admin::displayDashboardPage');
         }
 
-        return view('templates/header')
-            . view('admin/login')
-            . view('templates/footer');
+        return view('admin/login');
     }
 
     /**
@@ -90,7 +87,6 @@ class Admin extends BaseController
      * Display given page of articles
      * 
      * @param int $pageNum Number of page to be contained in the dashboard 
-     * 
      * @return mixed
      */
     public function displayDashboardPage($pageNum = 1)
@@ -110,16 +106,13 @@ class Admin extends BaseController
         $data['curPageNum'] = $pageNum;
         $data['numOfPages'] = $model->getNumOfPages(self::PAGE_SIZE);
 
-        return view('templates/header') .
-            view('admin/dashboard', $data) .
-            view('templates/footer');
+        return view('admin/dashboard', $data);
     }
 
     /**
      * Display specific article page to admin
      * 
      * @param int $articleId Id of the article
-     * 
      * @return mixed
      */
     public function displayArticlePage($articleId)
@@ -135,16 +128,13 @@ class Admin extends BaseController
             throw new PageNotFoundException();
         }
 
-        return view('templates/header') .
-            view('articles/single', $data) .
-            view('templates/footer');
+        return view('articles/single', $data);
     }
 
     /**
      * Display article edit page to admin
      * 
      * @param int $articleId Id of the article to be edited
-     * 
      * @return mixed
      */
     public function displayEditPage($articleId)
@@ -160,16 +150,13 @@ class Admin extends BaseController
             throw new PageNotFoundException();
         }
 
-        return view('templates/header') .
-            view('admin/edit', $data) .
-            view('templates/footer');
+        return view('admin/edit', $data);
     }
 
     /**
      * Process article edit request
      * 
      * @param int $articleId Id of the article that is edited
-     * 
      * @return RedirectResponse
      */
     public function handleEdit($articleId)
@@ -222,9 +209,7 @@ class Admin extends BaseController
             throw new PageNotFoundException();
         }
 
-        return view('templates/header')
-            . view('admin/add')
-            . view('templates/footer');
+        return view('admin/add');
     }
 
     /**

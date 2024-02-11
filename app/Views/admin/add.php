@@ -1,4 +1,6 @@
-<div class="add-container">
+<?= $this->extend('admin/layout') ?>
+<?= $this->section('content') ?>
+<div class="container">
     <form method="post" action="">
         <div>
             <input type="text" placeholder="Title of article" name="title" required>
@@ -11,3 +13,4 @@
         </div>
     </form>
 </div>
+<?= $this->endSection() ?>

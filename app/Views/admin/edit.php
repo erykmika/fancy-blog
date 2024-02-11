@@ -1,4 +1,6 @@
-<div class="edit-container">
+<?= $this->extend('admin/layout') ?>
+<?= $this->section('content') ?>
+<div class="container">
     <form method="post" action="">
         <div>
             <?php if (isset($article['title'])): ?>
@@ -19,3 +21,4 @@
         </div>
     </form>
 </div>
+<?= $this->endSection() ?>
