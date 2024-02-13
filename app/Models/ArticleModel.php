@@ -21,6 +21,11 @@ class ArticleModel extends Model
     ];
 
     /**
+     * Primary key
+     */
+    protected $primaryKey = 'id';
+
+    /**
      * Get paginated articles from a database
      * Implement own pagination
      * 
@@ -88,7 +93,7 @@ class ArticleModel extends Model
     {
         $insertedData = [
             'title' => $title,
-            'content' => $content,
+            'content' => $content
         ];
 
         $this->insert($insertedData);

@@ -4,21 +4,10 @@ namespace App\Database\Seeds;
 
 use CodeIgniter\Database\Seeder;
 
-class ArticleSeeder extends Seeder
+class ArticleTestSeeder extends Seeder
 {
     public function run()
     {
-        // Create the Article table
-        $this->db->query("CREATE TABLE IF NOT EXISTS Article ( 
-                          id INTEGER PRIMARY KEY AUTOINCREMENT,
-                          title VARCHAR(50) NOT NULL,
-                          content TEXT NOT NULL,
-                          date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
-                          );");
-
-        // Remove all records from the database
-        $this->db->query("DELETE FROM Article;");
-
         // Data used for seeding
         $article_data = [];
 

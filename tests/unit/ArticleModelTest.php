@@ -13,7 +13,7 @@ class ArticleModelTest extends CIUnitTestCase
     /**
      * Database seed
      */
-    protected $seed = 'ArticleSeeder';
+    protected $seed = 'ArticleTestSeeder';
 
     /**
      * Seed once
@@ -24,7 +24,6 @@ class ArticleModelTest extends CIUnitTestCase
      * Article model tested
      */
     protected $model;
-
 
     protected function setUp(): void
     {

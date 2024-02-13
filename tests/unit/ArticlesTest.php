@@ -8,7 +8,7 @@ use App\Controllers\Articles;
 
 class ArticlesTest extends CIUnitTestCase
 {
-    // Use the database trait. A SQLite database is used for testing.
+    // Use the database trait. An SQLite database is used for testing.
     use DatabaseTestTrait;
     // Use the controller trait as the controller is tested.
     use ControllerTestTrait;
@@ -16,7 +16,7 @@ class ArticlesTest extends CIUnitTestCase
     /**
      * Database seed - prepare the 'Article' table in the test database
      */
-    protected $seed = 'ArticleSeeder';
+    protected $seed = 'ArticleTestSeeder';
 
     /**
      * Seed once
@@ -24,7 +24,7 @@ class ArticlesTest extends CIUnitTestCase
     protected $seedOnce = false;
 
     /**
-     * Article model tested
+     * Controller tested
      */
     protected $controller;
 

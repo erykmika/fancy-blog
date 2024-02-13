@@ -38,6 +38,7 @@ class Admin extends BaseController
 
     /**
      * Return the admin login panel view
+     * 
      * @return mixed
      */
     public function viewLogin()
