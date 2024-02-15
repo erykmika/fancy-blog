@@ -5,9 +5,7 @@ namespace App\Controllers;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use Config\Services;
 use CodeIgniter\HTTP\RedirectResponse;
-
 use App\Models\ArticleModel;
-
 use InvalidArgumentException;
 use Exception;
 
@@ -27,6 +25,11 @@ class Admin extends BaseController
      * @var object session Session object
      */
     private $session;
+
+    /**
+     * @var string EXCEPTION_MSG Exception message for authorized admin
+     */
+    private const EXCEPTION_MSG = 'An error occurred'; 
 
     /**
      * Instantiate the session object used for admin authorization
@@ -96,12 +99,14 @@ class Admin extends BaseController
             throw new PageNotFoundException();
         }
 
+        $pageNum = intval($pageNum);
+
         $model = model(ArticleModel::class);
 
         try {
             $data['articles'] = $model->getArticlesPaginated(page: $pageNum, page_size: self::PAGE_SIZE);
         } catch (InvalidArgumentException $e) {
-            throw new PageNotFoundException();
+            throw new PageNotFoundException(self::EXCEPTION_MSG);
         }
 
         $data['curPageNum'] = $pageNum;
@@ -122,11 +127,13 @@ class Admin extends BaseController
             throw new PageNotFoundException();
         }
 
+        $articleId = intval($articleId);
+
         $model = model(ArticleModel::class);
         try {
             $data['article'] = $model->getArticle($articleId);
         } catch (InvalidArgumentException $e) {
-            throw new PageNotFoundException();
+            throw new PageNotFoundException(self::EXCEPTION_MSG);
         }
 
         return view('articles/single', $data);
@@ -144,11 +151,13 @@ class Admin extends BaseController
             throw new PageNotFoundException();
         }
 
+        $articleId = intval($articleId);
+
         $model = model(ArticleModel::class);
         try {
             $data['article'] = $model->getArticle($articleId);
         } catch (InvalidArgumentException $e) {
-            throw new PageNotFoundException();
+            throw new PageNotFoundException(self::EXCEPTION_MSG);
         }
 
         return view('admin/edit', $data);
@@ -166,6 +175,8 @@ class Admin extends BaseController
             throw new PageNotFoundException();
         }
 
+        $articleId = intval($articleId);
+
         // Retrieve data from the POST request, perform validation
         $newTitle = $this->request->getPost('new_title', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $newContent = $this->request->getPost('new_content', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -173,7 +184,7 @@ class Admin extends BaseController
         $newTitle = trim($newTitle);
         $newContent = trim($newContent);
 
-        // If either field is empty (""), redirect back to edit page
+        // If either field is empty (''), redirect back to edit page
         if (empty($newTitle) || empty($newContent)) {
             return redirect()->to(site_url('/admin/edit/' . $articleId));
         }
@@ -183,7 +194,7 @@ class Admin extends BaseController
         try {
             $model->updateArticle($articleId, $newTitle, $newContent);
         } catch (Exception $e) {
-            throw new PageNotFoundException();
+            throw new PageNotFoundException(self::EXCEPTION_MSG);
         }
 
         return redirect()->route('Admin::displayDashboardPage');
@@ -232,7 +243,7 @@ class Admin extends BaseController
             $title = trim($title);
             $content = trim($content);
 
-            // If either field is empty (""), navigate back to add page
+            // If either field is empty (''), navigate back to add page
             if (empty($title) || empty($content)) {
                 return redirect()->to(site_url('/admin/add'));
             }
@@ -241,7 +252,7 @@ class Admin extends BaseController
             $model->createArticle($title, $content);
 
         } catch (Exception $e) {
-            throw new PageNotFoundException("An error occurred");
+            throw new PageNotFoundException(self::EXCEPTION_MSG);
         }
 
         return redirect()->route('Admin::displayDashboardPage');
@@ -257,6 +268,8 @@ class Admin extends BaseController
         if (!$this->authorize() || !$this->request->is('post')) {
             throw new PageNotFoundException();
         }
+
+        $articleId = intval($articleId);
 
         $model = model(ArticleModel::class);
 

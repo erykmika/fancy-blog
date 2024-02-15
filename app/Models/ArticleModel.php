@@ -10,7 +10,7 @@ class ArticleModel extends Model
     /**
      * Table name
      */
-    protected $table = "Article";
+    protected $table = 'Article';
 
     /**
      * Allowed fields
@@ -35,12 +35,10 @@ class ArticleModel extends Model
      */
     public function getArticlesPaginated($page = 1, $page_size = 10)
     {
-        $page = intval($page);
-        $page_size = intval($page_size);
         if ($page < 1 || $page_size < 1) {
-            throw new InvalidArgumentException("Invalid pagination parameters");
+            throw new InvalidArgumentException('Invalid pagination parameters');
         }
-        return $this->orderBy("date DESC")->findAll($page_size, ($page - 1) * $page_size);
+        return $this->orderBy('date DESC')->findAll($page_size, ($page - 1) * $page_size);
     }
 
     /**
@@ -51,16 +49,14 @@ class ArticleModel extends Model
      */
     public function getArticle($id)
     {
-        $id = intval($id);
-
         if ($id < 1) {
-            throw new InvalidArgumentException("Invalid id");
+            throw new InvalidArgumentException('Invalid id');
         }
 
-        $article = $this->where("id", $id)->first();
+        $article = $this->where('id', $id)->first();
 
         if ($article === null) {
-            throw new InvalidArgumentException("Invalid id");
+            throw new InvalidArgumentException('Invalid id');
         }
 
         return $article;
@@ -75,9 +71,9 @@ class ArticleModel extends Model
     public function getNumOfPages($page_size)
     {
         if ($page_size < 1) {
-            throw new InvalidArgumentException("Invalid page size");
+            throw new InvalidArgumentException('Invalid page size');
         }
-        $query = $this->query("SELECT count(id) FROM Article;");
+        $query = $this->query('SELECT count(id) FROM Article;');
         $num_of_rows = (int) $query->getRowArray()['count(id)'];
         return (int) ceil($num_of_rows / $page_size);
     }
@@ -124,9 +120,9 @@ class ArticleModel extends Model
     public function deleteArticle($id)
     {
         if ($id < 1) {
-            throw new InvalidArgumentException("Invalid article id");
+            throw new InvalidArgumentException('Invalid article id');
         }
 
-        $this->where("id", $id)->delete();
+        $this->where('id', $id)->delete();
     }
 }

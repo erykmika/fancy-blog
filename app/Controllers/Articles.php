@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use CodeIgniter\Exceptions\PageNotFoundException;
-
 use App\Models\ArticleModel;
 
 class Articles extends BaseController
@@ -21,6 +20,7 @@ class Articles extends BaseController
      */
     public function viewPage($pageNum = 1)
     {
+        $pageNum = intval($pageNum);
         $model = model(ArticleModel::class);
         try {
             $data['articles'] = $model->getArticlesPaginated(page: $pageNum, page_size: Articles::PAGE_SIZE);
@@ -42,6 +42,7 @@ class Articles extends BaseController
      */
     public function viewArticle($articleId)
     {
+        $articleId = intval($articleId);
         $model = model(ArticleModel::class);
         try {
             $data['article'] = $model->getArticle($articleId);
