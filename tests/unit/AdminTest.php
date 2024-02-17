@@ -43,7 +43,7 @@ class AdminTest extends CIUnitTestCase
     public function testAdminMustBeAuthorizedToDisplayDashboard()
     {
         $pageNum = 1;
-        $result = $this->withUri("http://localhost:8080/admin/" . $pageNum)
+        $result = $this->withUri("http://localhost:8080/admin/page/" . $pageNum)
             ->controller(Admin::class)
             ->execute('displayDashboardPage', ['pageNum' => $pageNum]);
         $this->assertTrue(!$result->isOK());
@@ -52,7 +52,7 @@ class AdminTest extends CIUnitTestCase
     public function testAdminMustBeAuthorizedToDisplayArticle()
     {
         $articleId = 1;
-        $result = $this->withUri("http://localhost:8080/admin/articles/" . $articleId)
+        $result = $this->withUri("http://localhost:8080/admin/article/" . $articleId)
             ->controller(Admin::class)
             ->execute('displayArticlePage', ['articleId' => $articleId]);
         $this->assertTrue(!$result->isOK());

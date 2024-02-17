@@ -45,7 +45,7 @@ class ArticlesTest extends CIUnitTestCase
     {
         // Id of the article that is viewed
         $testedId = 1;
-        $result = $this->withUri("http://localhost:8080/articles/" . $testedId)
+        $result = $this->withUri("http://localhost:8080/article/" . $testedId)
             ->controller(Articles::class)
             ->execute('viewArticle', ['articleId' => $testedId]);
         $this->assertTrue($result->isOK());
@@ -55,7 +55,7 @@ class ArticlesTest extends CIUnitTestCase
     {
         // Number of page that is viewed
         $pageNum = 1;
-        $result = $this->withUri("http://localhost:8080/" . $pageNum)
+        $result = $this->withUri("http://localhost:8080/page/" . $pageNum)
             ->controller(Articles::class)
             ->execute('viewPage', ['pageNum' => $pageNum]);
         $this->assertTrue($result->isOK());

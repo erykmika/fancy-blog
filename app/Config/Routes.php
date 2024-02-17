@@ -26,14 +26,13 @@ $routes->post('/admin/edit/(:segment)', [Admin::class, 'handleEdit']);
 $routes->post('/admin/delete/(:segment)', [Admin::class,'handleDelete']);
 
 $routes->get('/admin', [Admin::class, 'displayDashboardPage']);
-$routes->get('/admin/articles/(:segment)', [Admin::class, 'displayArticlePage']);
-$routes->get('/admin/(:segment)', [Admin::class, 'displayDashboardPage']);
+$routes->get('/admin/article/(:segment)', [Admin::class, 'displayArticlePage']);
+$routes->get('/admin/page/(:segment)', [Admin::class, 'displayDashboardPage']);
 
 /** 
 * Articles section routes
 */
 $routes->get('/', [Articles::class, 'viewPage']);
-$routes->get('/articles', [Articles::class, 'viewPage']);
 
-$routes->get('/(:segment)', [Articles::class, 'viewPage']);
-$routes->get('/articles/(:segment)', [Articles::class, 'viewArticle']);
+$routes->get('/page/(:segment)', [Articles::class, 'viewPage']);
+$routes->get('/article/(:segment)', [Articles::class, 'viewArticle']);

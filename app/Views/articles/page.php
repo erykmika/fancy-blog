@@ -4,7 +4,7 @@
     <?php foreach ($articles as $article): ?>
         <div class="container my-5">
             <div>
-                <a href="/articles/<?= esc($article["id"]) ?>"><?= esc($article["title"]) ?></a>
+                <a href="/article/<?= esc($article["id"]) ?>"><?= esc($article["title"]) ?></a>
             </div>
             <div>
                 <?= esc($article["content"]) ?>
@@ -22,13 +22,13 @@
             <?php for ($i = 0; $i < $numOfPages; $i++): ?>
                 <?php if ($i + 1 != $curPageNum): ?>
                     <li class="page-item">
-                        <a class="page-link" href="/<?= $i + 1 ?>">
+                        <a class="page-link" href="/page/<?= $i + 1 ?>">
                             <?= esc($i + 1) ?>
                         </a>
                     </li>
                 <?php else: ?>
                     <li class="page-item active">
-                        <a class="page-link" href="/<?= $i + 1 ?>">
+                        <a class="page-link" href="/page/<?= $i + 1 ?>">
                             <?= esc($i + 1) ?>
                         </a>
                     </li>
