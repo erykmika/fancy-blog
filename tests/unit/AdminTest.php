@@ -42,19 +42,19 @@ class AdminTest extends CIUnitTestCase
 
     public function testAdminMustBeAuthorizedToDisplayDashboard()
     {
-        $pageNum = 1;
-        $result = $this->withUri("http://localhost:8080/admin/page/" . $pageNum)
+        $page_num = 1;
+        $result = $this->withUri("http://localhost:8080/admin/page/" . $page_num)
             ->controller(Admin::class)
-            ->execute('displayDashboardPage', ['pageNum' => $pageNum]);
+            ->execute('displayDashboardPage', ['page_num' => $page_num]);
         $this->assertTrue(!$result->isOK());
     }
 
     public function testAdminMustBeAuthorizedToDisplayArticle()
     {
-        $articleId = 1;
-        $result = $this->withUri("http://localhost:8080/admin/article/" . $articleId)
+        $article_id = 1;
+        $result = $this->withUri("http://localhost:8080/admin/article/" . $article_id)
             ->controller(Admin::class)
-            ->execute('displayArticlePage', ['articleId' => $articleId]);
+            ->execute('displayArticlePage', ['article_id' => $article_id]);
         $this->assertTrue(!$result->isOK());
     }
 
@@ -68,10 +68,10 @@ class AdminTest extends CIUnitTestCase
 
     public function testAdminMustBeAuthorizedToDisplayEditPage()
     {
-        $articleId = 1;
-        $result = $this->withUri("http://localhost:8080/admin/edit/" . $articleId)
+        $article_id = 1;
+        $result = $this->withUri("http://localhost:8080/admin/edit/" . $article_id)
             ->controller(Admin::class)
-            ->execute('displayEditPage', ['articleId' => $articleId]);
+            ->execute('displayEditPage', ['article_id' => $article_id]);
         $this->assertTrue(!$result->isOK());
     }
 }

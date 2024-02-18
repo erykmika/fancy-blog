@@ -20,7 +20,7 @@
     </header>
 
     <div class="container">
-        <form method="post" action="/admin/login">
+        <form method="post" action="">
             <label for="pswd">Password:</label>
             <input type="password" name="pswd" required />
             <input type="submit" value="Login">

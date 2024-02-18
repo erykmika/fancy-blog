@@ -16,11 +16,11 @@
     <?php endforeach; ?>
 <?php endif; ?>
 
-<?php if (isset($numOfPages) && is_int($numOfPages)): ?>
+<?php if (isset($num_of_pages) && is_int($num_of_pages)): ?>
     <nav aria-label="Page navigation">
         <ul class="pagination">
-            <?php for ($i = 0; $i < $numOfPages; $i++): ?>
-                <?php if ($i + 1 != $curPageNum): ?>
+            <?php for ($i = 0; $i < $num_of_pages; $i++): ?>
+                <?php if ($i + 1 != $cur_page_num): ?>
                     <li class="page-item">
                         <a class="page-link" href="/page/<?= $i + 1 ?>">
                             <?= esc($i + 1) ?>

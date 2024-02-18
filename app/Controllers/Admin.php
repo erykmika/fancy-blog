@@ -90,27 +90,27 @@ class Admin extends BaseController
      * Show admin dashboard if authorized
      * Display given page of articles
      * 
-     * @param int $pageNum Number of page to be contained in the dashboard 
+     * @param int $page_num Number of page to be contained in the dashboard 
      * @return mixed
      */
-    public function displayDashboardPage($pageNum = 1)
+    public function displayDashboardPage($page_num = 1)
     {
         if (!$this->authorize()) {
             throw new PageNotFoundException();
         }
 
-        $pageNum = intval($pageNum);
+        $page_num = intval($page_num);
 
         $model = model(ArticleModel::class);
 
         try {
-            $data['articles'] = $model->getArticlesPaginated(page: $pageNum, page_size: self::PAGE_SIZE);
+            $data['articles'] = $model->getArticlesPaginated(page: $page_num, page_size: self::PAGE_SIZE);
         } catch (InvalidArgumentException $e) {
             throw new PageNotFoundException(self::EXCEPTION_MSG);
         }
 
-        $data['curPageNum'] = $pageNum;
-        $data['numOfPages'] = $model->getNumOfPages(self::PAGE_SIZE);
+        $data['cur_page_num'] = $page_num;
+        $data['num_of_pages'] = $model->getNumOfPages(self::PAGE_SIZE);
 
         return view('admin/dashboard', $data);
     }
@@ -118,20 +118,20 @@ class Admin extends BaseController
     /**
      * Display specific article page to admin
      * 
-     * @param int $articleId Id of the article
+     * @param int $article_id Id of the article
      * @return mixed
      */
-    public function displayArticlePage($articleId)
+    public function displayArticlePage($article_id)
     {
         if (!$this->authorize()) {
             throw new PageNotFoundException();
         }
 
-        $articleId = intval($articleId);
+        $article_id = intval($article_id);
 
         $model = model(ArticleModel::class);
         try {
-            $data['article'] = $model->getArticle($articleId);
+            $data['article'] = $model->getArticle($article_id);
         } catch (InvalidArgumentException $e) {
             throw new PageNotFoundException(self::EXCEPTION_MSG);
         }
@@ -142,20 +142,20 @@ class Admin extends BaseController
     /**
      * Display article edit page to admin
      * 
-     * @param int $articleId Id of the article to be edited
+     * @param int $article_id Id of the article to be edited
      * @return mixed
      */
-    public function displayEditPage($articleId)
+    public function displayEditPage($article_id)
     {
         if (!$this->authorize()) {
             throw new PageNotFoundException();
         }
 
-        $articleId = intval($articleId);
+        $article_id = intval($article_id);
 
         $model = model(ArticleModel::class);
         try {
-            $data['article'] = $model->getArticle($articleId);
+            $data['article'] = $model->getArticle($article_id);
         } catch (InvalidArgumentException $e) {
             throw new PageNotFoundException(self::EXCEPTION_MSG);
         }
@@ -166,33 +166,33 @@ class Admin extends BaseController
     /**
      * Process article edit request
      * 
-     * @param int $articleId Id of the article that is edited
+     * @param int $article_id Id of the article that is edited
      * @return RedirectResponse
      */
-    public function handleEdit($articleId)
+    public function handleEdit($article_id)
     {
         if (!$this->authorize() || !$this->request->is('post')) {
             throw new PageNotFoundException();
         }
 
-        $articleId = intval($articleId);
+        $article_id = intval($article_id);
 
         // Retrieve data from the POST request, perform validation
-        $newTitle = $this->request->getPost('new_title', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $newContent = $this->request->getPost('new_content', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $new_title = $this->request->getPost('new_title', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $new_content = $this->request->getPost('new_content', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-        $newTitle = trim($newTitle);
-        $newContent = trim($newContent);
+        $new_title = trim($new_title);
+        $new_content = trim($new_content);
 
         // If either field is empty (''), redirect back to edit page
-        if (empty($newTitle) || empty($newContent)) {
-            return redirect()->to(site_url('/admin/edit/' . $articleId));
+        if (empty($new_title) || empty($new_content)) {
+            return redirect()->to(site_url('/admin/edit/' . $article_id));
         }
 
         $model = model(ArticleModel::class);
 
         try {
-            $model->updateArticle($articleId, $newTitle, $newContent);
+            $model->updateArticle($article_id, $new_title, $new_content);
         } catch (Exception $e) {
             throw new PageNotFoundException(self::EXCEPTION_MSG);
         }
@@ -263,18 +263,18 @@ class Admin extends BaseController
      * 
      * @return RedirectResponse
      */
-    public function handleDelete($articleId)
+    public function handleDelete($article_id)
     {
         if (!$this->authorize() || !$this->request->is('post')) {
             throw new PageNotFoundException();
         }
 
-        $articleId = intval($articleId);
+        $article_id = intval($article_id);
 
         $model = model(ArticleModel::class);
 
         try {
-            $model->deleteArticle($articleId);
+            $model->deleteArticle($article_id);
         } catch (InvalidArgumentException $e) {
             throw new PageNotFoundException();
         }

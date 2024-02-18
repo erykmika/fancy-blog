@@ -87,27 +87,27 @@ class ArticleModel extends Model
      */
     public function createArticle($title, $content)
     {
-        $insertedData = [
+        $inserted_data = [
             'title' => $title,
             'content' => $content
         ];
 
-        $this->insert($insertedData);
+        $this->insert($inserted_data);
     }
 
     /**
      * Update the article
      * 
      * @param int $id Id of the article to be updated
-     * @param string $newTitle New title
-     * @param string $newContent New content
+     * @param string $new_title New title
+     * @param string $new_content New content
      * @return void
      */
-    public function updateArticle($id, $newTitle, $newContent)
+    public function updateArticle($id, $new_title, $new_content)
     {
         $this->update($id, [
-            'title' => $newTitle,
-            'content' => $newContent
+            'title' => $new_title,
+            'content' => $new_content
         ]);
     }
 

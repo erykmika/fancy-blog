@@ -15,21 +15,21 @@ class Articles extends BaseController
     /**
      * Return the view of a page of articles
      * 
-     * @param int $pageNum Number of the page to be returned, 1 by default
+     * @param int $page_num Number of the page to be returned, 1 by default
      * @return mixed
      */
-    public function viewPage($pageNum = 1)
+    public function viewPage($page_num = 1)
     {
-        $pageNum = intval($pageNum);
+        $page_num = intval($page_num);
         $model = model(ArticleModel::class);
         try {
-            $data['articles'] = $model->getArticlesPaginated(page: $pageNum, page_size: Articles::PAGE_SIZE);
+            $data['articles'] = $model->getArticlesPaginated(page: $page_num, page_size: Articles::PAGE_SIZE);
         } catch (\InvalidArgumentException $e) {
             throw new PageNotFoundException();
         }
 
-        $data['curPageNum'] = $pageNum;
-        $data['numOfPages'] = $model->getNumOfPages(self::PAGE_SIZE);
+        $data['cur_page_num'] = $page_num;
+        $data['num_of_pages'] = $model->getNumOfPages(self::PAGE_SIZE);
 
         return view('articles/page', $data);
     }
@@ -37,15 +37,15 @@ class Articles extends BaseController
     /**
      * Return the view of a single article
      * 
-     * @param int $articleId Id of the article
+     * @param int $article_id Id of the article
      * @return mixed
      */
-    public function viewArticle($articleId)
+    public function viewArticle($article_id)
     {
-        $articleId = intval($articleId);
+        $article_id = intval($article_id);
         $model = model(ArticleModel::class);
         try {
-            $data['article'] = $model->getArticle($articleId);
+            $data['article'] = $model->getArticle($article_id);
         } catch (\InvalidArgumentException $e) {
             throw new PageNotFoundException();
         }

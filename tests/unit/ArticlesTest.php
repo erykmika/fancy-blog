@@ -47,17 +47,17 @@ class ArticlesTest extends CIUnitTestCase
         $testedId = 1;
         $result = $this->withUri("http://localhost:8080/article/" . $testedId)
             ->controller(Articles::class)
-            ->execute('viewArticle', ['articleId' => $testedId]);
+            ->execute('viewArticle', ['article_id' => $testedId]);
         $this->assertTrue($result->isOK());
     }
 
     public function testPaginationViewResponseIsOk()
     {
         // Number of page that is viewed
-        $pageNum = 1;
-        $result = $this->withUri("http://localhost:8080/page/" . $pageNum)
+        $page_num = 1;
+        $result = $this->withUri("http://localhost:8080/page/" . $page_num)
             ->controller(Articles::class)
-            ->execute('viewPage', ['pageNum' => $pageNum]);
+            ->execute('viewPage', ['page_num' => $page_num]);
         $this->assertTrue($result->isOK());
     }
 }

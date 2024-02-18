@@ -69,13 +69,13 @@ class ArticleModelTest extends CIUnitTestCase
 
     public function testArticleCanBeUpdated()
     {
-        $newTitle = 'NewTitle';
-        $newContent = 'NewContent';
-        $this->model->updateArticle(1, $newTitle, $newContent);
+        $new_title = 'NewTitle';
+        $new_content = 'NewContent';
+        $this->model->updateArticle(1, $new_title, $new_content);
         $this->seeInDatabase('Article', [
             'id' => 1,
-            'title' => $newTitle,
-            'content' => $newContent
+            'title' => $new_title,
+            'content' => $new_content
         ]);
     }
 
