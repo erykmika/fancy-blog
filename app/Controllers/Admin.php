@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\CategoryModel;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use Config\Services;
 use CodeIgniter\HTTP\RedirectResponse;
@@ -29,7 +30,7 @@ class Admin extends BaseController
     /**
      * @var string EXCEPTION_MSG Exception message for authorized admin
      */
-    private const EXCEPTION_MSG = 'An error occurred'; 
+    private const EXCEPTION_MSG = 'An error occurred';
 
     /**
      * Instantiate the session object used for admin authorization
@@ -136,7 +137,7 @@ class Admin extends BaseController
             throw new PageNotFoundException(self::EXCEPTION_MSG);
         }
 
-        return view('articles/single', $data);
+        return view('admin/single', $data);
     }
 
     /**
@@ -155,10 +156,30 @@ class Admin extends BaseController
 
         $model = model(ArticleModel::class);
         try {
-            $data['article'] = $model->getArticle($article_id);
+            $article = $model->getArticle($article_id);
+            $data['article'] = $article;
         } catch (InvalidArgumentException $e) {
             throw new PageNotFoundException(self::EXCEPTION_MSG);
         }
+
+        $category_model = model(CategoryModel::class);
+
+        // All categories that can be assigned to the article
+        $possible_categories = $category_model->getCategories();
+        // Already assigned categories
+        $categories = [];
+
+        foreach ($possible_categories as $key => $name) {
+            $categories[$name] = "";
+        }
+
+        foreach ($possible_categories as $key => $possible_category) {
+            if (in_array($possible_category, $article['categories'], true)) {
+                $categories[$possible_category] = "on";
+            }
+        }
+
+        $data['categories'] = $categories;
 
         return view('admin/edit', $data);
     }
@@ -191,6 +212,8 @@ class Admin extends BaseController
 
         $model = model(ArticleModel::class);
 
+        // TODO categories handling
+
         try {
             $model->updateArticle($article_id, $new_title, $new_content);
         } catch (Exception $e) {
@@ -221,7 +244,10 @@ class Admin extends BaseController
             throw new PageNotFoundException();
         }
 
-        return view('admin/add');
+        $category_model = model(CategoryModel::class);
+        $data['categories'] = $category_model->getCategories();
+
+        return view('admin/add', $data);
     }
 
     /**
@@ -249,8 +275,19 @@ class Admin extends BaseController
             }
 
             $model = model(ArticleModel::class);
-            $model->createArticle($title, $content);
+            $category_model = model(CategoryModel::class);
 
+            // All categories that can be assigned to the article
+            $possible_categories = $category_model->getCategories();
+            // Chosen categories
+            $categories = [];
+
+            foreach ($possible_categories as $key => $possible_category) {
+                if ($this->request->getPost($possible_category) === 'on') {
+                    $categories[] = $key;
+                }
+            }
+            $model->createArticle($title, $content, $categories);
         } catch (Exception $e) {
             throw new PageNotFoundException(self::EXCEPTION_MSG);
         }

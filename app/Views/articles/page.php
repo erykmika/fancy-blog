@@ -3,8 +3,15 @@
 <?php if (!empty($articles) && is_array($articles)): ?>
     <?php foreach ($articles as $article): ?>
         <div class="container my-5">
+            <div class="container-sm">
+                <?php foreach ($article['categories'] as $category): ?>
+                    <?= $category ?>
+                <?php endforeach; ?>
+            </div>
             <div>
-                <a href="/article/<?= esc($article["id"]) ?>"><?= esc($article["title"]) ?></a>
+                <a href="/article/<?= esc($article["id"]) ?>">
+                    <?= esc($article["title"]) ?>
+                </a>
             </div>
             <div>
                 <?= esc($article["content"]) ?>

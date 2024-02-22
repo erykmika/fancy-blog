@@ -3,6 +3,11 @@
 <?php if (!empty($articles) && is_array($articles)): ?>
     <?php foreach ($articles as $article): ?>
         <div class="container">
+            <div class="container-sm">
+                <?php foreach ($article['categories'] as $category): ?>
+                    <?= $category ?>
+                <?php endforeach; ?>
+            </div>
             <div>
                 <a href="/admin/article/<?= esc($article["id"]) ?>">
                     <?= esc($article["title"]) ?>

@@ -32,7 +32,7 @@ class ArticleCategories extends Migration
         $this->forge->reset();
 
         $this->forge->addField(['id INT NOT NULL AUTO_INCREMENT,
-                                name VARCHAR(10) NOT NULL UNIQUE'
+                                name VARCHAR(20) NOT NULL UNIQUE'
         ]);
 
         $this->forge->addKey(['id'], true);
@@ -44,7 +44,7 @@ class ArticleCategories extends Migration
         $this->forge->addField(['articleId INT NOT NULL,
                                 categoryId INT NOT NULL'
         ]);
-        
+
         $this->forge->createTable('ArticleCategory', true);
 
         // Composite primary key
@@ -52,7 +52,7 @@ class ArticleCategories extends Migration
         ALTER TABLE ArticleCategory
         ADD PRIMARY KEY (articleId, categoryId);
         SQL);
-    
+
         // Foreign keys
 
         $this->db->query(<<<SQL

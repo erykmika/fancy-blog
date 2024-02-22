@@ -16,6 +16,18 @@
                 <textarea placeholder="New content" name="new_content" required></textarea>
             <?php endif; ?>
         </div>
+        <fieldset>
+            <legend>Select categories: </legend>
+            <div>
+                <?php foreach ($categories as $category => $state): ?>
+                    <div>
+                        <input type="checkbox" id="<?= $category ?>" name="<?= $category ?>" <?= (($state === "on") ? "checked" : "") ?> />
+                        <label for="<?= $category ?>">
+                            <?= $category ?>
+                        </label>
+                    </div>
+                <?php endforeach; ?>
+        </fieldset>
         <div>
             <input type="submit" value="Edit the article">
         </div>

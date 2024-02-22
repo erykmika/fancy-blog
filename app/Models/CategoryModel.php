@@ -21,17 +21,17 @@ class CategoryModel extends Model
     ];
 
     /**
-     * Get specific category
+     * Get category names
      * 
-     * @param int $id Category id
      * @return mixed
      */
-    public function getCategoryName($id)
+    public function getCategories()
     {
-        if($id < 1) {
-            throw new InvalidArgumentException('Invalid category id');
+        $rows = $this->select('id, name')->findAll();
+        $categories = [];
+        foreach ($rows as $row) {
+            $categories[$row['id']] = $row['name'];
         }
-        $name = $this->where('id', $id)->first()['name'];
-        return $name;
+        return $categories;
     }
 }
