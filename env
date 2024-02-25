@@ -1,0 +1,30 @@
+# Based on example ci4 env file
+
+#--------------------------------------------------------------------
+# ENVIRONMENT
+#--------------------------------------------------------------------
+
+CI_ENVIRONMENT = development
+
+#--------------------------------------------------------------------
+# DATABASE
+#--------------------------------------------------------------------
+
+# Development database
+#database.default.hostname = localhost
+#database.default.database = blog
+#database.default.username = blog
+#database.default.password = blog
+#database.default.DBDriver = MySQLi
+#database.default.DBPrefix =
+#database.default.port = 3306
+
+
+# Testing database
+#database.tests.hostname = localhost
+#database.tests.database = :memory:
+#database.tests.username =
+#database.tests.password =
+#database.tests.DBDriver = SQLite3
+#database.tests.DBPrefix =
+#database.tests.port = 3306
