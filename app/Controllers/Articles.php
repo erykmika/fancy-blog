@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controllers;
 
 use CodeIgniter\Exceptions\PageNotFoundException;
@@ -18,7 +20,7 @@ class Articles extends BaseController
      * @param int $page_num Number of the page to be returned, 1 by default
      * @return mixed
      */
-    public function viewPage($page_num = 1)
+    public function viewPage(int $page_num = 1): mixed
     {
         $page_num = intval($page_num);
         $model = model(ArticleModel::class);
@@ -40,7 +42,7 @@ class Articles extends BaseController
      * @param int $article_id Id of the article
      * @return mixed
      */
-    public function viewArticle($article_id)
+    public function viewArticle(int $article_id): mixed
     {
         $article_id = intval($article_id);
         $model = model(ArticleModel::class);

@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
 class ArticleCategories extends Migration
 {
-    public function up()
+    public function up(): void
     {
         $this->forge->addField([
             'id' => [
@@ -31,7 +33,8 @@ class ArticleCategories extends Migration
 
         $this->forge->reset();
 
-        $this->forge->addField(['id INT NOT NULL AUTO_INCREMENT,
+        $this->forge->addField([
+            'id INT NOT NULL AUTO_INCREMENT,
                                 name VARCHAR(20) NOT NULL UNIQUE'
         ]);
 
@@ -41,7 +44,8 @@ class ArticleCategories extends Migration
         $this->forge->reset();
 
         // A junction table - a many-to-many relationship: articles <-> categories
-        $this->forge->addField(['articleId INT NOT NULL,
+        $this->forge->addField([
+            'articleId INT NOT NULL,
                                 categoryId INT NOT NULL'
         ]);
 
@@ -70,7 +74,7 @@ class ArticleCategories extends Migration
         SQL);
     }
 
-    public function down()
+    public function down(): void
     {
         $this->forge->dropTable('Article', true, true);
         $this->forge->dropTable('Category', true, true);

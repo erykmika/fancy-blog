@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controllers;
 
 use App\Models\CategoryModel;
@@ -7,6 +9,7 @@ use CodeIgniter\Exceptions\PageNotFoundException;
 use Config\Services;
 use CodeIgniter\HTTP\RedirectResponse;
 use App\Models\ArticleModel;
+use CodeIgniter\Session\Session;
 use InvalidArgumentException;
 use Exception;
 
@@ -23,9 +26,9 @@ class Admin extends BaseController
     private const PAGE_SIZE = 10;
 
     /**
-     * @var object session Session object
+     * @var Session session Session object
      */
-    private $session;
+    private Session $session;
 
     /**
      * @var string EXCEPTION_MSG Exception message for authorized admin
@@ -45,7 +48,7 @@ class Admin extends BaseController
      * 
      * @return mixed
      */
-    public function viewLogin()
+    public function viewLogin(): mixed
     {
         if ($this->authorize()) {
             return redirect()->route('Admin::displayDashboardPage');
@@ -60,7 +63,7 @@ class Admin extends BaseController
      * 
      * @return RedirectResponse
      */
-    public function handleLogin()
+    public function handleLogin(): RedirectResponse
     {
         if (!$this->request->is('post')) {
             throw new PageNotFoundException();
@@ -80,7 +83,7 @@ class Admin extends BaseController
      * 
      * @return RedirectResponse
      */
-    public function logout()
+    public function logout(): RedirectResponse
     {
         unset($_SESSION['login_status']);
         session_destroy();
@@ -94,7 +97,7 @@ class Admin extends BaseController
      * @param int $page_num Number of page to be contained in the dashboard 
      * @return mixed
      */
-    public function displayDashboardPage($page_num = 1)
+    public function displayDashboardPage(int $page_num = 1): mixed
     {
         if (!$this->authorize()) {
             throw new PageNotFoundException();
@@ -122,7 +125,7 @@ class Admin extends BaseController
      * @param int $article_id Id of the article
      * @return mixed
      */
-    public function displayArticlePage($article_id)
+    public function displayArticlePage(int $article_id): mixed
     {
         if (!$this->authorize()) {
             throw new PageNotFoundException();
@@ -146,7 +149,7 @@ class Admin extends BaseController
      * @param int $article_id Id of the article to be edited
      * @return mixed
      */
-    public function displayEditPage($article_id)
+    public function displayEditPage(int $article_id): mixed
     {
         if (!$this->authorize()) {
             throw new PageNotFoundException();
@@ -184,13 +187,31 @@ class Admin extends BaseController
         return view('admin/edit', $data);
     }
 
+    /** 
+     * Validate article POST request data
+     * 
+     * @return array|bool Associative array of 'title' and 'content' keys on success, false otherwise 
+     */
+    private function validateArticlePostData(): array|bool
+    {
+        // Retrieve data from the POST request, perform validation
+        $title = trim(filter_var($_POST['title'], FILTER_SANITIZE_FULL_SPECIAL_CHARS));
+        $content = trim(filter_var($_POST['content'], FILTER_SANITIZE_FULL_SPECIAL_CHARS));
+
+        // If either field is empty (''), return false
+        if (empty($title) || empty($content)) {
+            return false;
+        }
+        return ['title' => $title, 'content' => $content];
+    }
+
     /**
      * Process article edit request
      * 
      * @param int $article_id Id of the article that is edited
      * @return RedirectResponse
      */
-    public function handleEdit($article_id)
+    public function handleEdit(int $article_id): RedirectResponse
     {
         if (!$this->authorize() || !$this->request->is('post')) {
             throw new PageNotFoundException();
@@ -198,22 +219,18 @@ class Admin extends BaseController
 
         $article_id = intval($article_id);
 
-        // Retrieve data from the POST request, perform validation
-        $new_title = $this->request->getPost('new_title', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $new_content = $this->request->getPost('new_content', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $article_data = $this->validateArticlePostData();
 
-        $new_title = trim($new_title);
-        $new_content = trim($new_content);
-
-        // If either field is empty (''), redirect back to edit page
-        if (empty($new_title) || empty($new_content)) {
+        if ($article_data === false) {
             return redirect()->to(site_url('/admin/edit/' . $article_id));
         }
+
+        $new_title = $article_data['title'];
+        $new_content = $article_data['content'];
 
         $model = model(ArticleModel::class);
 
         // TODO categories handling
-
         try {
             $model->updateArticle($article_id, $new_title, $new_content);
         } catch (Exception $e) {
@@ -228,7 +245,7 @@ class Admin extends BaseController
      * 
      * @return bool Is admin authorized
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return (isset($_SESSION['login_status']) && $_SESSION['login_status'] === true);
     }
@@ -238,7 +255,7 @@ class Admin extends BaseController
      * 
      * @return mixed
      */
-    public function displayAddPage()
+    public function displayAddPage(): mixed
     {
         if (!$this->authorize()) {
             throw new PageNotFoundException();
@@ -255,24 +272,21 @@ class Admin extends BaseController
      * 
      * @return RedirectResponse
      */
-    public function handleAdd()
+    public function handleAdd(): RedirectResponse
     {
         if (!$this->authorize() || !$this->request->is('post')) {
             throw new PageNotFoundException();
         }
 
         try {
-            // Retrieve data from the POST request, validate it
-            $title = $this->request->getPost('title', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            $content = $this->request->getPost('content', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $article_data = $this->validateArticlePostData();
 
-            $title = trim($title);
-            $content = trim($content);
-
-            // If either field is empty (''), navigate back to add page
-            if (empty($title) || empty($content)) {
+            if ($article_data === false) {
                 return redirect()->to(site_url('/admin/add'));
             }
+
+            $title = $article_data['title'];
+            $content = $article_data['content'];
 
             $model = model(ArticleModel::class);
             $category_model = model(CategoryModel::class);
@@ -298,9 +312,10 @@ class Admin extends BaseController
     /**
      * Process article deletion request
      * 
+     * @param int $article_id Id of the article to be deleted
      * @return RedirectResponse
      */
-    public function handleDelete($article_id)
+    public function handleDelete(int $article_id): RedirectResponse
     {
         if (!$this->authorize() || !$this->request->is('post')) {
             throw new PageNotFoundException();

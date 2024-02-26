@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\ControllerTestTrait;
@@ -23,6 +25,7 @@ class AdminTest extends CIUnitTestCase
      */
     protected $seedOnce = false;
 
+
     /**
      * Controller tested
      */
@@ -40,7 +43,7 @@ class AdminTest extends CIUnitTestCase
         unset($this->controller);
     }
 
-    public function testAdminMustBeAuthorizedToDisplayDashboard()
+    public function testAdminMustBeAuthorizedToDisplayDashboard(): void
     {
         $page_num = 1;
         $result = $this->withUri("http://localhost:8080/admin/page/" . $page_num)
@@ -49,7 +52,7 @@ class AdminTest extends CIUnitTestCase
         $this->assertTrue(!$result->isOK());
     }
 
-    public function testAdminMustBeAuthorizedToDisplayArticle()
+    public function testAdminMustBeAuthorizedToDisplayArticle(): void
     {
         $article_id = 1;
         $result = $this->withUri("http://localhost:8080/admin/article/" . $article_id)
@@ -58,7 +61,7 @@ class AdminTest extends CIUnitTestCase
         $this->assertTrue(!$result->isOK());
     }
 
-    public function testAdminMustBeAuthorizedToDisplayAddPage()
+    public function testAdminMustBeAuthorizedToDisplayAddPage(): void
     {
         $result = $this->withUri("http://localhost:8080/admin/add/")
             ->controller(Admin::class)
@@ -66,7 +69,7 @@ class AdminTest extends CIUnitTestCase
         $this->assertTrue(!$result->isOK());
     }
 
-    public function testAdminMustBeAuthorizedToDisplayEditPage()
+    public function testAdminMustBeAuthorizedToDisplayEditPage(): void
     {
         $article_id = 1;
         $result = $this->withUri("http://localhost:8080/admin/edit/" . $article_id)

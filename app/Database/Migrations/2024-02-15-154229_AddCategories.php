@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
 class AddCategories extends Migration
 {
-    public function up()
+    public function up(): void
     {
         $this->forge->addField([
             'id' => [
@@ -24,7 +26,7 @@ class AddCategories extends Migration
                 'null' => false
             ],
             'date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP()'
-            ]);
+        ]);
 
         $this->forge->addKey('id', true);
         $this->forge->createTable('Article', true);
@@ -44,7 +46,7 @@ class AddCategories extends Migration
                                 categoryId INT NOT NULL']);
 
         // Composite primary key
-        $this->forge->createTable('ArticleCategory', true); 
+        $this->forge->createTable('ArticleCategory', true);
         $this->db->query('ALTER TABLE ArticleCategory ADD PRIMARY KEY (articleId, categoryId);');
 
         // Foreign keys
@@ -52,7 +54,7 @@ class AddCategories extends Migration
         $this->db->query('ALTER TABLE ArticleCategory ADD FOREIGN KEY (categoryId) REFERENCES Category(id);');
     }
 
-    public function down()
+    public function down(): void
     {
         $this->forge->dropTable('Article');
         $this->forge->dropTable('Category');

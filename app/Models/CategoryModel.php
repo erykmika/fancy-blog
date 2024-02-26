@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use CodeIgniter\Model;
-use InvalidArgumentException;
 
 class CategoryModel extends Model
 {
@@ -25,7 +26,7 @@ class CategoryModel extends Model
      * 
      * @return mixed
      */
-    public function getCategories()
+    public function getCategories(): mixed
     {
         $rows = $this->select('id, name')->findAll();
         $categories = [];

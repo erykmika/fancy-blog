@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use CodeIgniter\Model;
@@ -33,7 +35,7 @@ class ArticleModel extends Model
      * @param int $limit Number of articles per page
      * @return mixed
      */
-    public function getArticlesPaginated($page = 1, $page_size = 10)
+    public function getArticlesPaginated(int $page = 1, int $page_size = 10): mixed
     {
         if ($page < 1 || $page_size < 1) {
             throw new InvalidArgumentException('Invalid pagination parameters');
@@ -79,7 +81,7 @@ class ArticleModel extends Model
      * @param int $id Id of the article to retrieve
      * @return mixed
      */
-    public function getArticle($id)
+    public function getArticle(int $id): mixed
     {
         if ($id < 1) {
             throw new InvalidArgumentException('Invalid id');
@@ -115,7 +117,7 @@ class ArticleModel extends Model
      * @param int $page_size Number of articles per page
      * @return int
      */
-    public function getNumOfPages($page_size)
+    public function getNumOfPages(int $page_size): int
     {
         if ($page_size < 1) {
             throw new InvalidArgumentException('Invalid page size');
@@ -133,7 +135,7 @@ class ArticleModel extends Model
      * @param int[] $categories Ids of the article categories
      * @return void
      */
-    public function createArticle($title, $content, $categories)
+    public function createArticle(string $title, string $content, array $categories): void
     {
         $inserted_data = [
             'title' => $title,
@@ -160,7 +162,7 @@ class ArticleModel extends Model
      * @param string $new_content New content
      * @return void
      */
-    public function updateArticle($id, $new_title, $new_content)
+    public function updateArticle(int $id, string $new_title, string $new_content): void
     {
         $this->update($id, [
             'title' => $new_title,
@@ -175,7 +177,7 @@ class ArticleModel extends Model
      * @param int $id Id of the article to be deleted
      * @return void
      */
-    public function deleteArticle($id)
+    public function deleteArticle(int $id): void
     {
         if ($id < 1) {
             throw new InvalidArgumentException('Invalid article id');

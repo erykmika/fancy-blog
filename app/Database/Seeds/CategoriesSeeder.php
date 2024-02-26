@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Database\Seeds;
 
 use CodeIgniter\Database\Seeder;
 
 class CategoriesSeeder extends Seeder
 {
-    public function run()
+    public function run(): mixed
     {
         // Insert sample categories into the 'Category' table
         $categories = [
@@ -36,7 +38,7 @@ class CategoriesSeeder extends Seeder
         foreach ($article_ids as $article_id) {
             $number_of_categories = rand(2, 4);
             $picked_category_ids = array_rand($categories, $number_of_categories);
-            foreach($picked_category_ids as $category_id) {
+            foreach ($picked_category_ids as $category_id) {
                 $sql = <<<SQL
                     INSERT INTO ArticleCategory (articleId, categoryId) 
                     VALUES ({$article_id}, {$category_id}); 

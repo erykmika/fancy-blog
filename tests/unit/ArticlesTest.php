@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\ControllerTestTrait;
@@ -41,7 +43,7 @@ class ArticlesTest extends CIUnitTestCase
         unset($this->controller);
     }
 
-    public function testArticleViewResponseIsOk()
+    public function testArticleViewResponseIsOk(): void
     {
         // Id of the article that is viewed
         $testedId = 1;
@@ -51,7 +53,7 @@ class ArticlesTest extends CIUnitTestCase
         $this->assertTrue($result->isOK());
     }
 
-    public function testPaginationViewResponseIsOk()
+    public function testPaginationViewResponseIsOk(): void
     {
         // Number of page that is viewed
         $page_num = 1;

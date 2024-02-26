@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Database\Seeds;
 
 use CodeIgniter\Database\Seeder;
 
 class ArticleTestSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
         // Data used for seeding
         $article_data = [];
