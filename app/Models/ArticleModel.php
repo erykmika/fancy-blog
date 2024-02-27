@@ -144,14 +144,7 @@ class ArticleModel extends Model
 
         $this->insert($inserted_data);
         $articleId = (int) $this->db->insertID();
-
-        foreach ($categories as $category) {
-            $sql = <<<SQL
-            INSERT INTO ArticleCategory (articleId, categoryId)
-            VALUES ($articleId, $category);
-            SQL;
-            $this->db->query($sql);
-        }
+        $this->setCategories($articleId, $categories);
     }
 
     /**
@@ -160,15 +153,42 @@ class ArticleModel extends Model
      * @param int $id Id of the article to be updated
      * @param string $new_title New title
      * @param string $new_content New content
+     * @param int[] $new_categories Ids of new categories 
      * @return void
      */
-    public function updateArticle(int $id, string $new_title, string $new_content): void
+    public function updateArticle(int $id, string $new_title, string $new_content, array $new_categories): void
     {
+        if ($id < 1) {
+            throw new InvalidArgumentException('Invalid article id');
+        }
         $this->update($id, [
             'title' => $new_title,
             'content' => $new_content
         ]);
-        //TODO categories handling
+
+        $this->db->query("DELETE FROM ArticleCategory WHERE articleId = $id;");
+        $this->setCategories($id, $new_categories);
+    }
+
+    /**
+     * Set categories for the article
+     * 
+     * @param int $articleId Id of the article
+     * @param int[] $categoryIds Ids of the categories to be set
+     * @return void
+     */
+    private function setCategories(int $articleId, array $categoryIds): void
+    {
+        if ($articleId < 1) {
+            throw new InvalidArgumentException('Invalid article id');
+        }
+        foreach ($categoryIds as $categoryId) {
+            $sql = <<<SQL
+            INSERT INTO ArticleCategory (articleId, categoryId)
+            VALUES ($articleId, $categoryId);
+            SQL;
+            $this->db->query($sql);
+        }
     }
 
     /**

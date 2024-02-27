@@ -188,9 +188,9 @@ class Admin extends BaseController
     }
 
     /** 
-     * Validate article POST request data
+     * Validate article POST request data, including categories
      * 
-     * @return array|bool Associative array of 'title' and 'content' keys on success, false otherwise 
+     * @return array|bool Associative array of 'title', 'content', 'categories' keys on success, false otherwise 
      */
     private function validateArticlePostData(): array|bool
     {
@@ -202,7 +202,21 @@ class Admin extends BaseController
         if (empty($title) || empty($content)) {
             return false;
         }
-        return ['title' => $title, 'content' => $content];
+
+        // Handle categories
+        $category_model = model(CategoryModel::class);
+
+        // All categories that can be assigned to an article
+        $possible_categories = $category_model->getCategories();
+        // Chosen categories
+        $categories = [];
+
+        foreach ($possible_categories as $key => $possible_category) {
+            if ($this->request->getPost($possible_category) === 'on') {
+                $categories[] = $key;
+            }
+        }
+        return ['title' => $title, 'content' => $content, 'categories' => $categories];
     }
 
     /**
@@ -218,21 +232,21 @@ class Admin extends BaseController
         }
 
         $article_id = intval($article_id);
-
         $article_data = $this->validateArticlePostData();
 
         if ($article_data === false) {
             return redirect()->to(site_url('/admin/edit/' . $article_id));
         }
 
-        $new_title = $article_data['title'];
-        $new_content = $article_data['content'];
-
         $model = model(ArticleModel::class);
 
-        // TODO categories handling
         try {
-            $model->updateArticle($article_id, $new_title, $new_content);
+            $model->updateArticle(
+                $article_id,
+                $article_data['title'],
+                $article_data['content'],
+                $article_data['categories']
+            );
         } catch (Exception $e) {
             throw new PageNotFoundException(self::EXCEPTION_MSG);
         }
@@ -285,23 +299,13 @@ class Admin extends BaseController
                 return redirect()->to(site_url('/admin/add'));
             }
 
-            $title = $article_data['title'];
-            $content = $article_data['content'];
-
             $model = model(ArticleModel::class);
-            $category_model = model(CategoryModel::class);
 
-            // All categories that can be assigned to the article
-            $possible_categories = $category_model->getCategories();
-            // Chosen categories
-            $categories = [];
-
-            foreach ($possible_categories as $key => $possible_category) {
-                if ($this->request->getPost($possible_category) === 'on') {
-                    $categories[] = $key;
-                }
-            }
-            $model->createArticle($title, $content, $categories);
+            $model->createArticle(
+                $article_data['title'],
+                $article_data['content'],
+                $article_data['categories']
+            );
         } catch (Exception $e) {
             throw new PageNotFoundException(self::EXCEPTION_MSG);
         }
