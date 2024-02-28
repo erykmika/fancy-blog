@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controllers;
 
+use App\Models\CategoryModel;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use Config\Services;
 use CodeIgniter\HTTP\RedirectResponse;
-
 use App\Models\ArticleModel;
-
+use CodeIgniter\Session\Session;
 use InvalidArgumentException;
 use Exception;
 
@@ -24,9 +26,14 @@ class Admin extends BaseController
     private const PAGE_SIZE = 10;
 
     /**
-     * @var object session Session object
+     * @var Session session Session object
      */
-    private $session;
+    private Session $session;
+
+    /**
+     * @var string EXCEPTION_MSG Exception message for authorized admin
+     */
+    private const EXCEPTION_MSG = 'An error occurred';
 
     /**
      * Instantiate the session object used for admin authorization
@@ -38,9 +45,10 @@ class Admin extends BaseController
 
     /**
      * Return the admin login panel view
+     * 
      * @return mixed
      */
-    public function viewLogin()
+    public function viewLogin(): mixed
     {
         if ($this->authorize()) {
             return redirect()->route('Admin::displayDashboardPage');
@@ -55,7 +63,7 @@ class Admin extends BaseController
      * 
      * @return RedirectResponse
      */
-    public function handleLogin()
+    public function handleLogin(): RedirectResponse
     {
         if (!$this->request->is('post')) {
             throw new PageNotFoundException();
@@ -75,7 +83,7 @@ class Admin extends BaseController
      * 
      * @return RedirectResponse
      */
-    public function logout()
+    public function logout(): RedirectResponse
     {
         unset($_SESSION['login_status']);
         session_destroy();
@@ -86,10 +94,10 @@ class Admin extends BaseController
      * Show admin dashboard if authorized
      * Display given page of articles
      * 
-     * @param int $pageNum Number of page to be contained in the dashboard 
+     * @param int $page_num Number of page to be contained in the dashboard 
      * @return mixed
      */
-    public function displayDashboardPage($pageNum = 1)
+    public function displayDashboardPage(int $page_num = 1): mixed
     {
         if (!$this->authorize()) {
             throw new PageNotFoundException();
@@ -98,13 +106,13 @@ class Admin extends BaseController
         $model = model(ArticleModel::class);
 
         try {
-            $data['articles'] = $model->getArticlesPaginated(page: $pageNum, page_size: self::PAGE_SIZE);
+            $data['articles'] = $model->getArticlesPaginated(page: $page_num, page_size: self::PAGE_SIZE);
         } catch (InvalidArgumentException $e) {
-            throw new PageNotFoundException();
+            throw new PageNotFoundException(self::EXCEPTION_MSG);
         }
 
-        $data['curPageNum'] = $pageNum;
-        $data['numOfPages'] = $model->getNumOfPages(self::PAGE_SIZE);
+        $data['cur_page_num'] = $page_num;
+        $data['num_of_pages'] = $model->getNumOfPages(self::PAGE_SIZE);
 
         return view('admin/dashboard', $data);
     }
@@ -112,10 +120,10 @@ class Admin extends BaseController
     /**
      * Display specific article page to admin
      * 
-     * @param int $articleId Id of the article
+     * @param int $article_id Id of the article
      * @return mixed
      */
-    public function displayArticlePage($articleId)
+    public function displayArticlePage(int $article_id): mixed
     {
         if (!$this->authorize()) {
             throw new PageNotFoundException();
@@ -123,21 +131,21 @@ class Admin extends BaseController
 
         $model = model(ArticleModel::class);
         try {
-            $data['article'] = $model->getArticle($articleId);
+            $data['article'] = $model->getArticle($article_id);
         } catch (InvalidArgumentException $e) {
-            throw new PageNotFoundException();
+            throw new PageNotFoundException(self::EXCEPTION_MSG);
         }
 
-        return view('articles/single', $data);
+        return view('admin/single', $data);
     }
 
     /**
      * Display article edit page to admin
      * 
-     * @param int $articleId Id of the article to be edited
+     * @param int $article_id Id of the article to be edited
      * @return mixed
      */
-    public function displayEditPage($articleId)
+    public function displayEditPage(int $article_id): mixed
     {
         if (!$this->authorize()) {
             throw new PageNotFoundException();
@@ -145,44 +153,95 @@ class Admin extends BaseController
 
         $model = model(ArticleModel::class);
         try {
-            $data['article'] = $model->getArticle($articleId);
+            $article = $model->getArticle($article_id);
+            $data['article'] = $article;
         } catch (InvalidArgumentException $e) {
-            throw new PageNotFoundException();
+            throw new PageNotFoundException(self::EXCEPTION_MSG);
         }
 
+        $category_model = model(CategoryModel::class);
+
+        // All categories that can be assigned to the article
+        $possible_categories = $category_model->getCategories();
+        // Already assigned categories
+        $categories = [];
+
+        foreach ($possible_categories as $key => $name) {
+            $categories[$name] = "";
+        }
+
+        foreach ($possible_categories as $key => $possible_category) {
+            if (in_array($possible_category, $article['categories'], true)) {
+                $categories[$possible_category] = "on";
+            }
+        }
+
+        $data['categories'] = $categories;
+
         return view('admin/edit', $data);
+    }
+
+    /** 
+     * Validate article POST request data, including categories
+     * 
+     * @return array|bool Associative array of 'title', 'content', 'categories' keys on success, false otherwise 
+     */
+    private function validateArticlePostData(): array|bool
+    {
+        // Retrieve data from the POST request, perform validation
+        $title = trim(filter_var($_POST['title'], FILTER_SANITIZE_FULL_SPECIAL_CHARS));
+        $content = trim(filter_var($_POST['content'], FILTER_SANITIZE_FULL_SPECIAL_CHARS));
+
+        // If either field is empty (''), return false
+        if (empty($title) || empty($content)) {
+            return false;
+        }
+
+        // Handle categories
+        $category_model = model(CategoryModel::class);
+
+        // All categories that can be assigned to an article
+        $possible_categories = $category_model->getCategories();
+        // Chosen categories
+        $categories = [];
+
+        foreach ($possible_categories as $key => $possible_category) {
+            if ($this->request->getPost($possible_category) === 'on') {
+                $categories[] = $key;
+            }
+        }
+        return ['title' => $title, 'content' => $content, 'categories' => $categories];
     }
 
     /**
      * Process article edit request
      * 
-     * @param int $articleId Id of the article that is edited
+     * @param int $article_id Id of the article that is edited
      * @return RedirectResponse
      */
-    public function handleEdit($articleId)
+    public function handleEdit(int $article_id): RedirectResponse
     {
         if (!$this->authorize() || !$this->request->is('post')) {
             throw new PageNotFoundException();
         }
 
-        // Retrieve data from the POST request, perform validation
-        $newTitle = $this->request->getPost('new_title', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $newContent = $this->request->getPost('new_content', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $article_data = $this->validateArticlePostData();
 
-        $newTitle = trim($newTitle);
-        $newContent = trim($newContent);
-
-        // If either field is empty (""), redirect back to edit page
-        if (empty($newTitle) || empty($newContent)) {
-            return redirect()->to(site_url('/admin/edit/' . $articleId));
+        if ($article_data === false) {
+            return redirect()->to(site_url('/admin/edit/' . $article_id));
         }
 
         $model = model(ArticleModel::class);
 
         try {
-            $model->updateArticle($articleId, $newTitle, $newContent);
+            $model->updateArticle(
+                $article_id,
+                $article_data['title'],
+                $article_data['content'],
+                $article_data['categories']
+            );
         } catch (Exception $e) {
-            throw new PageNotFoundException();
+            throw new PageNotFoundException(self::EXCEPTION_MSG);
         }
 
         return redirect()->route('Admin::displayDashboardPage');
@@ -193,7 +252,7 @@ class Admin extends BaseController
      * 
      * @return bool Is admin authorized
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return (isset($_SESSION['login_status']) && $_SESSION['login_status'] === true);
     }
@@ -203,13 +262,16 @@ class Admin extends BaseController
      * 
      * @return mixed
      */
-    public function displayAddPage()
+    public function displayAddPage(): mixed
     {
         if (!$this->authorize()) {
             throw new PageNotFoundException();
         }
 
-        return view('admin/add');
+        $category_model = model(CategoryModel::class);
+        $data['categories'] = $category_model->getCategories();
+
+        return view('admin/add', $data);
     }
 
     /**
@@ -217,30 +279,28 @@ class Admin extends BaseController
      * 
      * @return RedirectResponse
      */
-    public function handleAdd()
+    public function handleAdd(): RedirectResponse
     {
         if (!$this->authorize() || !$this->request->is('post')) {
             throw new PageNotFoundException();
         }
 
         try {
-            // Retrieve data from the POST request, validate it
-            $title = $this->request->getPost('title', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            $content = $this->request->getPost('content', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $article_data = $this->validateArticlePostData();
 
-            $title = trim($title);
-            $content = trim($content);
-
-            // If either field is empty (""), navigate back to add page
-            if (empty($title) || empty($content)) {
+            if ($article_data === false) {
                 return redirect()->to(site_url('/admin/add'));
             }
 
             $model = model(ArticleModel::class);
-            $model->createArticle($title, $content);
 
+            $model->createArticle(
+                $article_data['title'],
+                $article_data['content'],
+                $article_data['categories']
+            );
         } catch (Exception $e) {
-            throw new PageNotFoundException("An error occurred");
+            throw new PageNotFoundException(self::EXCEPTION_MSG);
         }
 
         return redirect()->route('Admin::displayDashboardPage');
@@ -249,9 +309,10 @@ class Admin extends BaseController
     /**
      * Process article deletion request
      * 
+     * @param int $article_id Id of the article to be deleted
      * @return RedirectResponse
      */
-    public function handleDelete($articleId)
+    public function handleDelete(int $article_id): RedirectResponse
     {
         if (!$this->authorize() || !$this->request->is('post')) {
             throw new PageNotFoundException();
@@ -260,7 +321,7 @@ class Admin extends BaseController
         $model = model(ArticleModel::class);
 
         try {
-            $model->deleteArticle($articleId);
+            $model->deleteArticle($article_id);
         } catch (InvalidArgumentException $e) {
             throw new PageNotFoundException();
         }

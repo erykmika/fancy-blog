@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\ControllerTestTrait;
@@ -8,7 +10,7 @@ use App\Controllers\Admin;
 
 class AdminTest extends CIUnitTestCase
 {
-    // Use the database trait. A SQLite database is used for testing.
+    // Use the database trait. An SQLite database is used for testing.
     use DatabaseTestTrait;
     // Use the controller trait as the controller is tested.
     use ControllerTestTrait;
@@ -16,15 +18,17 @@ class AdminTest extends CIUnitTestCase
     /**
      * Database seed - prepare the 'Article' table in the test database
      */
-    protected $seed = 'ArticleSeeder';
+    protected $seed = 'DatabaseTestSeeder';
+
 
     /**
      * Seed once
      */
     protected $seedOnce = false;
 
+
     /**
-     * Article model tested
+     * Controller tested
      */
     protected $controller;
 
@@ -41,25 +45,25 @@ class AdminTest extends CIUnitTestCase
         unset($this->controller);
     }
 
-    public function testAdminMustBeAuthorizedToDisplayDashboard()
+    public function testAdminMustBeAuthorizedToDisplayDashboard(): void
     {
-        $pageNum = 1;
-        $result = $this->withUri("http://localhost:8080/admin/" . $pageNum)
+        $page_num = 1;
+        $result = $this->withUri("http://localhost:8080/admin/page/" . $page_num)
             ->controller(Admin::class)
-            ->execute('displayDashboardPage', ['pageNum' => $pageNum]);
+            ->execute('displayDashboardPage', $page_num);
         $this->assertTrue(!$result->isOK());
     }
 
-    public function testAdminMustBeAuthorizedToDisplayArticle()
+    public function testAdminMustBeAuthorizedToDisplayArticle(): void
     {
-        $articleId = 1;
-        $result = $this->withUri("http://localhost:8080/admin/articles/" . $articleId)
+        $article_id = 1;
+        $result = $this->withUri("http://localhost:8080/admin/article/" . $article_id)
             ->controller(Admin::class)
-            ->execute('displayArticlePage', ['articleId' => $articleId]);
+            ->execute('displayArticlePage', $article_id);
         $this->assertTrue(!$result->isOK());
     }
 
-    public function testAdminMustBeAuthorizedToDisplayAddPage()
+    public function testAdminMustBeAuthorizedToDisplayAddPage(): void
     {
         $result = $this->withUri("http://localhost:8080/admin/add/")
             ->controller(Admin::class)
@@ -67,12 +71,12 @@ class AdminTest extends CIUnitTestCase
         $this->assertTrue(!$result->isOK());
     }
 
-    public function testAdminMustBeAuthorizedToDisplayEditPage()
+    public function testAdminMustBeAuthorizedToDisplayEditPage(): void
     {
-        $articleId = 1;
-        $result = $this->withUri("http://localhost:8080/admin/edit/" . $articleId)
+        $article_id = 1;
+        $result = $this->withUri("http://localhost:8080/admin/edit/" . $article_id)
             ->controller(Admin::class)
-            ->execute('displayEditPage', ['articleId' => $articleId]);
+            ->execute('displayEditPage', $article_id);
         $this->assertTrue(!$result->isOK());
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 
@@ -13,7 +15,7 @@ class ArticleModelTest extends CIUnitTestCase
     /**
      * Database seed
      */
-    protected $seed = 'ArticleSeeder';
+    protected $seed = 'DatabaseTestSeeder';
 
     /**
      * Seed once
@@ -24,7 +26,6 @@ class ArticleModelTest extends CIUnitTestCase
      * Article model tested
      */
     protected $model;
-
 
     protected function setUp(): void
     {
@@ -38,29 +39,29 @@ class ArticleModelTest extends CIUnitTestCase
         unset($this->model);
     }
 
-    public function testArticlesCanBePaginated()
+    public function testArticlesCanBePaginated(): void
     {
         $paginated = $this->model->getArticlesPaginated(page: 2, page_size: 2);
         $this->assertEquals(1, count($paginated));
     }
 
-    public function testArticleCanBeRetrievedById()
+    public function testArticleCanBeRetrievedById(): void
     {
         $article = $this->model->getArticle(3);
         $this->assertEquals('Reflections', $article['title']);
     }
 
-    public function testNumberOfPagesIsCorrect()
+    public function testNumberOfPagesIsCorrect(): void
     {
         $numberOfPages = $this->model->getNumOfPages(page_size: 2);
         $this->assertEquals(2, $numberOfPages);
     }
 
-    public function testArticleCanBeCreated()
+    public function testArticleCanBeCreated(): void
     {
         $title = 'TestTitle';
         $content = 'TestContent';
-        $this->model->createArticle($title, $content);
+        $this->model->createArticle($title, $content, []);
         $criteria = [
             'title' => $title,
             'content' => $content
@@ -68,19 +69,19 @@ class ArticleModelTest extends CIUnitTestCase
         $this->seeInDatabase('Article', $criteria);
     }
 
-    public function testArticleCanBeUpdated()
+    public function testArticleCanBeUpdated(): void
     {
-        $newTitle = 'NewTitle';
-        $newContent = 'NewContent';
-        $this->model->updateArticle(1, $newTitle, $newContent);
+        $new_title = 'NewTitle';
+        $new_content = 'NewContent';
+        $this->model->updateArticle(1, $new_title, $new_content, [1, 2]);
         $this->seeInDatabase('Article', [
             'id' => 1,
-            'title' => $newTitle,
-            'content' => $newContent
+            'title' => $new_title,
+            'content' => $new_content
         ]);
     }
 
-    public function testArticleCanBeDeleted()
+    public function testArticleCanBeDeleted(): void
     {
         $id = 1;
         $this->model->deleteArticle($id);

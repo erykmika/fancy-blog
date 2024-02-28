@@ -28,9 +28,9 @@ class Database extends Config
     public array $default = [
         'DSN' => '',
         'hostname' => 'localhost',
-        'username' => '',
-        'password' => '',
-        'database' => '',
+        'username' => 'blog',
+        'password' => 'blog',
+        'database' => 'blog',
         'DBDriver' => 'MySQLi',
         'DBPrefix' => '',
         'pConnect' => true,
@@ -52,7 +52,7 @@ class Database extends Config
      */
     public array $tests = [
         'DSN' => '',
-        'hostname' => '127.0.0.1',
+        'hostname' => 'localhost',
         'username' => '',
         'password' => '',
         'database' => ':memory:',

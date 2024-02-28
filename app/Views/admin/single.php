@@ -1,4 +1,4 @@
-<?= $this->extend('articles/layout') ?>
+<?= $this->extend('admin/layout') ?>
 <?= $this->section('content') ?>
 <?php if (!empty($article) && is_array($article)): ?>
     <div class="container my-5">

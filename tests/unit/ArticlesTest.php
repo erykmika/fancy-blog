@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\ControllerTestTrait;
@@ -8,7 +10,7 @@ use App\Controllers\Articles;
 
 class ArticlesTest extends CIUnitTestCase
 {
-    // Use the database trait. A SQLite database is used for testing.
+    // Use the database trait. An SQLite database is used for testing.
     use DatabaseTestTrait;
     // Use the controller trait as the controller is tested.
     use ControllerTestTrait;
@@ -16,7 +18,7 @@ class ArticlesTest extends CIUnitTestCase
     /**
      * Database seed - prepare the 'Article' table in the test database
      */
-    protected $seed = 'ArticleSeeder';
+    protected $seed = 'DatabaseTestSeeder';
 
     /**
      * Seed once
@@ -24,7 +26,7 @@ class ArticlesTest extends CIUnitTestCase
     protected $seedOnce = false;
 
     /**
-     * Article model tested
+     * Controller tested
      */
     protected $controller;
 
@@ -41,23 +43,23 @@ class ArticlesTest extends CIUnitTestCase
         unset($this->controller);
     }
 
-    public function testArticleViewResponseIsOk()
+    public function testArticleViewResponseIsOk(): void
     {
         // Id of the article that is viewed
         $testedId = 1;
-        $result = $this->withUri("http://localhost:8080/articles/" . $testedId)
+        $result = $this->withUri("http://localhost:8080/article/" . $testedId)
             ->controller(Articles::class)
-            ->execute('viewArticle', ['articleId' => $testedId]);
+            ->execute('viewArticle', $testedId);
         $this->assertTrue($result->isOK());
     }
 
-    public function testPaginationViewResponseIsOk()
+    public function testPaginationViewResponseIsOk(): void
     {
         // Number of page that is viewed
-        $pageNum = 1;
-        $result = $this->withUri("http://localhost:8080/" . $pageNum)
+        $page_num = 1;
+        $result = $this->withUri("http://localhost:8080/page/" . $page_num)
             ->controller(Articles::class)
-            ->execute('viewPage', ['pageNum' => $pageNum]);
+            ->execute('viewPage', $page_num);
         $this->assertTrue($result->isOK());
     }
 }

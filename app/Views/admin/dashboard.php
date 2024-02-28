@@ -3,8 +3,13 @@
 <?php if (!empty($articles) && is_array($articles)): ?>
     <?php foreach ($articles as $article): ?>
         <div class="container">
+            <div class="container-sm">
+                <?php foreach ($article['categories'] as $category): ?>
+                    <?= $category ?>
+                <?php endforeach; ?>
+            </div>
             <div>
-                <a href="/admin/articles/<?= esc($article["id"]) ?>">
+                <a href="/admin/article/<?= esc($article["id"]) ?>">
                     <?= esc($article["title"]) ?>
                 </a>
             </div>
@@ -25,19 +30,19 @@
     <?php endforeach; ?>
 <?php endif; ?>
 
-<?php if (isset($numOfPages) && is_int($numOfPages)): ?>
+<?php if (isset($num_of_pages) && is_int($num_of_pages)): ?>
     <nav aria-label="Page navigation">
         <ul class="pagination">
-            <?php for ($i = 0; $i < $numOfPages; $i++): ?>
-                <?php if ($i + 1 != $curPageNum): ?>
+            <?php for ($i = 0; $i < $num_of_pages; $i++): ?>
+                <?php if ($i + 1 != $cur_page_num): ?>
                     <li class="page-item">
-                        <a class="page-link" href="/admin/<?= $i + 1 ?>">
+                        <a class="page-link" href="/admin/page/<?= $i + 1 ?>">
                             <?= esc($i + 1) ?>
                         </a>
                     </li>
                 <?php else: ?>
                     <li class="page-item active">
-                        <a class="page-link" href="/admin/<?= $i + 1 ?>">
+                        <a class="page-link" href="/admin/page/<?= $i + 1 ?>">
                             <?= esc($i + 1) ?>
                         </a>
                     </li>
