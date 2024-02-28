@@ -18,7 +18,7 @@ class ArticlesTest extends CIUnitTestCase
     /**
      * Database seed - prepare the 'Article' table in the test database
      */
-    protected $seed = 'ArticleTestSeeder';
+    protected $seed = 'DatabaseTestSeeder';
 
     /**
      * Seed once
@@ -49,7 +49,7 @@ class ArticlesTest extends CIUnitTestCase
         $testedId = 1;
         $result = $this->withUri("http://localhost:8080/article/" . $testedId)
             ->controller(Articles::class)
-            ->execute('viewArticle', ['article_id' => $testedId]);
+            ->execute('viewArticle', $testedId);
         $this->assertTrue($result->isOK());
     }
 
@@ -59,7 +59,7 @@ class ArticlesTest extends CIUnitTestCase
         $page_num = 1;
         $result = $this->withUri("http://localhost:8080/page/" . $page_num)
             ->controller(Articles::class)
-            ->execute('viewPage', ['page_num' => $page_num]);
+            ->execute('viewPage', $page_num);
         $this->assertTrue($result->isOK());
     }
 }

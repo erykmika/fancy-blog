@@ -22,11 +22,11 @@ class CategoryModel extends Model
     ];
 
     /**
-     * Get category names
+     * Get an associative array of all category ids and relevant names
      * 
-     * @return mixed
+     * @return array
      */
-    public function getCategories(): mixed
+    public function getCategories(): array
     {
         $rows = $this->select('id, name')->findAll();
         $categories = [];

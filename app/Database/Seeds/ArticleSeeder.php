@@ -8,7 +8,7 @@ use CodeIgniter\Database\Seeder;
 
 class ArticleSeeder extends Seeder
 {
-    public function run(): mixed
+    public function run(): void
     {
         /**
          *  Data used for seeding the development database

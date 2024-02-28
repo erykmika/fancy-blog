@@ -15,7 +15,7 @@ class ArticleModelTest extends CIUnitTestCase
     /**
      * Database seed
      */
-    protected $seed = 'ArticleTestSeeder';
+    protected $seed = 'DatabaseTestSeeder';
 
     /**
      * Seed once
@@ -73,7 +73,7 @@ class ArticleModelTest extends CIUnitTestCase
     {
         $new_title = 'NewTitle';
         $new_content = 'NewContent';
-        $this->model->updateArticle(1, $new_title, $new_content);
+        $this->model->updateArticle(1, $new_title, $new_content, [1, 2]);
         $this->seeInDatabase('Article', [
             'id' => 1,
             'title' => $new_title,

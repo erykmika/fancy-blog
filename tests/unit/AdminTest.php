@@ -18,7 +18,8 @@ class AdminTest extends CIUnitTestCase
     /**
      * Database seed - prepare the 'Article' table in the test database
      */
-    protected $seed = 'ArticleTestSeeder';
+    protected $seed = 'DatabaseTestSeeder';
+
 
     /**
      * Seed once
@@ -30,6 +31,7 @@ class AdminTest extends CIUnitTestCase
      * Controller tested
      */
     protected $controller;
+
 
     protected function setUp(): void
     {
@@ -48,7 +50,7 @@ class AdminTest extends CIUnitTestCase
         $page_num = 1;
         $result = $this->withUri("http://localhost:8080/admin/page/" . $page_num)
             ->controller(Admin::class)
-            ->execute('displayDashboardPage', ['page_num' => $page_num]);
+            ->execute('displayDashboardPage', $page_num);
         $this->assertTrue(!$result->isOK());
     }
 
@@ -57,7 +59,7 @@ class AdminTest extends CIUnitTestCase
         $article_id = 1;
         $result = $this->withUri("http://localhost:8080/admin/article/" . $article_id)
             ->controller(Admin::class)
-            ->execute('displayArticlePage', ['article_id' => $article_id]);
+            ->execute('displayArticlePage', $article_id);
         $this->assertTrue(!$result->isOK());
     }
 
@@ -74,7 +76,7 @@ class AdminTest extends CIUnitTestCase
         $article_id = 1;
         $result = $this->withUri("http://localhost:8080/admin/edit/" . $article_id)
             ->controller(Admin::class)
-            ->execute('displayEditPage', ['article_id' => $article_id]);
+            ->execute('displayEditPage', $article_id);
         $this->assertTrue(!$result->isOK());
     }
 }

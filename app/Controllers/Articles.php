@@ -22,7 +22,6 @@ class Articles extends BaseController
      */
     public function viewPage(int $page_num = 1): mixed
     {
-        $page_num = intval($page_num);
         $model = model(ArticleModel::class);
         try {
             $data['articles'] = $model->getArticlesPaginated(page: $page_num, page_size: Articles::PAGE_SIZE);
@@ -44,7 +43,6 @@ class Articles extends BaseController
      */
     public function viewArticle(int $article_id): mixed
     {
-        $article_id = intval($article_id);
         $model = model(ArticleModel::class);
         try {
             $data['article'] = $model->getArticle($article_id);

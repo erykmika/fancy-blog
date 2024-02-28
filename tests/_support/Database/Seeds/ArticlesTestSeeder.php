@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Database\Seeds;
+namespace Tests\Support\Database\Seeds;
 
 use CodeIgniter\Database\Seeder;
 
-class ArticleTestSeeder extends Seeder
+class ArticlesTestSeeder extends Seeder
 {
     public function run(): void
     {

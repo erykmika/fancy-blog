@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Database\Seeds;
+namespace Tests\Support\Database\Seeds;
 
 use CodeIgniter\Database\Seeder;
 
-class CategoriesSeeder extends Seeder
+class CategoriesTestSeeder extends Seeder
 {
     public function run(): void
     {
@@ -15,8 +15,6 @@ class CategoriesSeeder extends Seeder
             1 => 'Technology',
             2 => 'Sport',
             3 => 'Animals',
-            4 => 'Programming',
-            5 => 'Games',
         ];
 
         foreach ($categories as $id => $name) {
@@ -34,9 +32,9 @@ class CategoriesSeeder extends Seeder
             $article_ids[] = $id_row['id'];
         }
 
-        // For each article (article id), add a random number (<2, 4>) of categories to it
+        // For each article (article id), add a random number (<1, 3>) of categories to it
         foreach ($article_ids as $article_id) {
-            $number_of_categories = rand(2, 4);
+            $number_of_categories = rand(2, 3);
             $picked_category_ids = array_rand($categories, $number_of_categories);
             foreach ($picked_category_ids as $category_id) {
                 $sql = <<<SQL

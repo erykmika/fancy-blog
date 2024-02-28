@@ -103,8 +103,6 @@ class Admin extends BaseController
             throw new PageNotFoundException();
         }
 
-        $page_num = intval($page_num);
-
         $model = model(ArticleModel::class);
 
         try {
@@ -131,8 +129,6 @@ class Admin extends BaseController
             throw new PageNotFoundException();
         }
 
-        $article_id = intval($article_id);
-
         $model = model(ArticleModel::class);
         try {
             $data['article'] = $model->getArticle($article_id);
@@ -154,8 +150,6 @@ class Admin extends BaseController
         if (!$this->authorize()) {
             throw new PageNotFoundException();
         }
-
-        $article_id = intval($article_id);
 
         $model = model(ArticleModel::class);
         try {
@@ -231,7 +225,6 @@ class Admin extends BaseController
             throw new PageNotFoundException();
         }
 
-        $article_id = intval($article_id);
         $article_data = $this->validateArticlePostData();
 
         if ($article_data === false) {
@@ -324,8 +317,6 @@ class Admin extends BaseController
         if (!$this->authorize() || !$this->request->is('post')) {
             throw new PageNotFoundException();
         }
-
-        $article_id = intval($article_id);
 
         $model = model(ArticleModel::class);
 
