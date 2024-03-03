@@ -61,6 +61,7 @@ class Admin extends BaseController
      * Process admin login data
      * Redirect to admin dashboard on success, retry to login otherwise
      * 
+     * @throws PageNotFoundException if request is not POST
      * @return RedirectResponse
      */
     public function handleLogin(): RedirectResponse
@@ -94,7 +95,8 @@ class Admin extends BaseController
      * Show admin dashboard if authorized
      * Display given page of articles
      * 
-     * @param int $page_num Number of page to be contained in the dashboard 
+     * @param int $page_num Number of page to be contained in the dashboard
+     * @throws PageNotFoundException if admin not authorized or pagination failed
      * @return mixed
      */
     public function displayDashboardPage(int $page_num = 1): mixed
@@ -121,6 +123,7 @@ class Admin extends BaseController
      * Display specific article page to admin
      * 
      * @param int $article_id Id of the article
+     * @throws PageNotFoundException if admin not authorized or article lookup failed
      * @return mixed
      */
     public function displayArticlePage(int $article_id): mixed
@@ -143,6 +146,7 @@ class Admin extends BaseController
      * Display article edit page to admin
      * 
      * @param int $article_id Id of the article to be edited
+     * @throws PageNotFoundException if admin not authorized or article lookup failed
      * @return mixed
      */
     public function displayEditPage(int $article_id): mixed
@@ -217,6 +221,7 @@ class Admin extends BaseController
      * Process article edit request
      * 
      * @param int $article_id Id of the article that is edited
+     * @throws PageNotFoundException if admin not authorized or article update failed
      * @return RedirectResponse
      */
     public function handleEdit(int $article_id): RedirectResponse
@@ -258,8 +263,9 @@ class Admin extends BaseController
     }
 
     /**
-     * Display article Create page to admin
+     * Display article creation page to admin
      * 
+     * @throws PageNotFoundException if admin not authorized
      * @return mixed
      */
     public function displayAddPage(): mixed
@@ -276,7 +282,8 @@ class Admin extends BaseController
 
     /**
      * Handle article creation request
-     * 
+     *
+     * @throws PageNotFoundException if admin not authorized or adding article failed
      * @return RedirectResponse
      */
     public function handleAdd(): RedirectResponse
@@ -310,6 +317,7 @@ class Admin extends BaseController
      * Process article deletion request
      * 
      * @param int $article_id Id of the article to be deleted
+     * @throws PageNotFoundException if admin not authorized or article udeletion failed
      * @return RedirectResponse
      */
     public function handleDelete(int $article_id): RedirectResponse

@@ -13,7 +13,7 @@
 
 ## Setup
 
-PHP >= 8.0 is recommended. You must have an instance of the MySQL database and composer installed in order to set up required dependencies.
+PHP >= 8.1 is recommended. You must have an instance of the MySQL database and composer installed in order to set up required dependencies.
 
 ### Clone the repository and navigate into it
 ```sh
@@ -46,3 +46,13 @@ Seeding the database will insert sample data into the tables.
 php spark db:seed
 > DatabaseSeeder
 ```
+
+### Start a development server
+```sh
+php spark serve
+```
+Now that everything is set up, go to **localhost:8080** in your web browser.
+
+## Accessing the admin dashboard
+
+Go to **localhost:8080/admin/login**. Enter the password **123**. After that you should be able to edit the articles.

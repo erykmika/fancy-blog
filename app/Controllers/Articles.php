@@ -18,6 +18,7 @@ class Articles extends BaseController
      * Return the view of a page of articles
      * 
      * @param int $page_num Number of the page to be returned, 1 by default
+     * @throws PageNotFoundException if pagination failed
      * @return mixed
      */
     public function viewPage(int $page_num = 1): mixed
@@ -39,6 +40,7 @@ class Articles extends BaseController
      * Return the view of a single article
      * 
      * @param int $article_id Id of the article
+     * @throws PageNotFoundException if article lookup failed
      * @return mixed
      */
     public function viewArticle(int $article_id): mixed

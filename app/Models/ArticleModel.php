@@ -33,6 +33,7 @@ class ArticleModel extends Model
      * 
      * @param int $page Number of page to return articles from
      * @param int $limit Number of articles per page
+     * @throws InvalidArgumentException if pagination parameters are invalid
      * @return mixed
      */
     public function getArticlesPaginated(int $page = 1, int $page_size = 10): mixed
@@ -79,6 +80,7 @@ class ArticleModel extends Model
      * Get specific article from a database
      * 
      * @param int $id Id of the article to retrieve
+     * @throws InvalidArgumentException if article id is invalid
      * @return mixed
      */
     public function getArticle(int $id): mixed
@@ -115,6 +117,7 @@ class ArticleModel extends Model
      * Get total number of pages in case of pagination
      * 
      * @param int $page_size Number of articles per page
+     * @throws InvalidArgumentException if page size is invalid
      * @return int
      */
     public function getNumOfPages(int $page_size): int
@@ -153,7 +156,8 @@ class ArticleModel extends Model
      * @param int $id Id of the article to be updated
      * @param string $new_title New title
      * @param string $new_content New content
-     * @param int[] $new_categories Ids of new categories 
+     * @param int[] $new_categories Ids of new categories
+     * @throws InvalidArgumentException if article id is invalid
      * @return void
      */
     public function updateArticle(int $id, string $new_title, string $new_content, array $new_categories): void
@@ -175,6 +179,7 @@ class ArticleModel extends Model
      * 
      * @param int $articleId Id of the article
      * @param int[] $categoryIds Ids of the categories to be set
+     * @throws InvalidArgumentException if article id is invalid
      * @return void
      */
     private function setCategories(int $articleId, array $categoryIds): void
@@ -195,6 +200,7 @@ class ArticleModel extends Model
      * Delete the article with the specified id
      * 
      * @param int $id Id of the article to be deleted
+     * @throws InvalidArgumentException if article id is invalid
      * @return void
      */
     public function deleteArticle(int $id): void

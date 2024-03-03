@@ -22,7 +22,7 @@ class CategoriesTestSeeder extends Seeder
         }
 
         /* 
-            Create random many-to-many relationships between 'Article' and 'Category'
+            Create a many-to-many relationship between 'Article' and 'Category'
         */
 
         // Get 'Article' ids
