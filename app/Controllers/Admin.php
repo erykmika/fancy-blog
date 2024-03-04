@@ -120,6 +120,24 @@ class Admin extends BaseController
     }
 
     /**
+     * Retrieve single article from model
+     * 
+     * @param int $id Article id
+     * @throws PageNotFoundException
+     * @return array
+     */
+    private function fetchArticle(int $id): array
+    {
+        $model = model(ArticleModel::class);
+        try {
+            $article = $model->getArticle($id);
+        } catch (InvalidArgumentException $e) {
+            throw new PageNotFoundException(self::EXCEPTION_MSG);
+        }
+        return $article;
+    }
+
+    /**
      * Display specific article page to admin
      * 
      * @param int $article_id Id of the article
@@ -131,14 +149,7 @@ class Admin extends BaseController
         if (!$this->authorize()) {
             throw new PageNotFoundException();
         }
-
-        $model = model(ArticleModel::class);
-        try {
-            $data['article'] = $model->getArticle($article_id);
-        } catch (InvalidArgumentException $e) {
-            throw new PageNotFoundException(self::EXCEPTION_MSG);
-        }
-
+        $data['article'] = $this->fetchArticle($article_id);
         return view('admin/single', $data);
     }
 
@@ -155,14 +166,7 @@ class Admin extends BaseController
             throw new PageNotFoundException();
         }
 
-        $model = model(ArticleModel::class);
-        try {
-            $article = $model->getArticle($article_id);
-            $data['article'] = $article;
-        } catch (InvalidArgumentException $e) {
-            throw new PageNotFoundException(self::EXCEPTION_MSG);
-        }
-
+        $article = $this->fetchArticle($article_id);
         $category_model = model(CategoryModel::class);
 
         // All categories that can be assigned to the article
@@ -203,7 +207,6 @@ class Admin extends BaseController
 
         // Handle categories
         $category_model = model(CategoryModel::class);
-
         // All categories that can be assigned to an article
         $possible_categories = $category_model->getCategories();
         // Chosen categories
