@@ -10,13 +10,13 @@
             <?php endforeach; ?>
         </div>
         <div>
-            <?= esc($article["title"]) ?>
+            <?= $article["title"] ?>
         </div>
         <div>
-            <?= esc($article["content"]) ?>
+            <?= $article["content"] ?>
         </div>
         <div>
-            <?= esc($article["date"]) ?>
+            <?= $article["date"] ?>
         </div>
     </div>
 <?php endif; ?>

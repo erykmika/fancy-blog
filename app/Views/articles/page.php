@@ -11,15 +11,15 @@
                 <?php endforeach; ?>
             </div>
             <div>
-                <a href="/article/<?= esc($article["id"]) ?>">
-                    <?= esc($article["title"]) ?>
+                <a href="/article/<?= $article["id"] ?>">
+                    <?= $article["title"] ?>
                 </a>
             </div>
             <div>
-                <?= esc($article["content"]) ?>
+                <?= $article["content"] ?>
             </div>
             <div>
-                <?= esc($article["date"]) ?>
+                <?= $article["date"] ?>
             </div>
         </div>
     <?php endforeach; ?>

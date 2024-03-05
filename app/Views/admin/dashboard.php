@@ -11,18 +11,18 @@
                 <?php endforeach; ?>
             </div>
             <div>
-                <a href="/admin/article/<?= esc($article["id"]) ?>">
-                    <?= esc($article["title"]) ?>
+                <a href="/admin/article/<?= $article["id"] ?>">
+                    <?= $article["title"] ?>
                 </a>
             </div>
             <div>
-                <?= esc($article["content"]) ?>
+                <?= $article["content"] ?>
             </div>
             <div>
-                <?= esc($article["date"]) ?>
+                <?= $article["date"] ?>
             </div>
             <div class="delete">
-                <form method="post" action="/admin/delete/<?= esc($article["id"]) ?>" onsubmit="return confirm('Are you sure?');">
+                <form method="post" action="/admin/delete/<?= $article["id"] ?>" onsubmit="return confirm('Are you sure?');">
                     <input type="submit" value="Delete">
                     <a href="/admin/edit/<?= esc($article['id']) ?>">Edit</a>
                 </form>
